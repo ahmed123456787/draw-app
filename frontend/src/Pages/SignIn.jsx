@@ -1,5 +1,5 @@
 import React from "react";
-import asset from "./../assets/assets";
+import asset from "../assets/assets";
 
 const SignIn = () => {
   return (
