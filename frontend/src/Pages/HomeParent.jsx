@@ -4,7 +4,7 @@ import ChildrenWorks from "../Components/home/ChildrenWorks";
 import data from "../data";
 import assets from "../assets/assets";
 
-const HomeChild = () => {
+const HomeParent = () => {
   const [username, setUsername] = useState("ahmed_99");
   const [userProfile, setuserProfile] = useState(assets.boy_1);
 
@@ -27,4 +27,4 @@ const HomeChild = () => {
   );
 };
 
-export default HomeChild;
+export default HomeParent;

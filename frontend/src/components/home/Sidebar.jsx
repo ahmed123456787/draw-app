@@ -3,7 +3,7 @@ import asset from "./../../assets/assets";
 import { FaRegFileArchive } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import { BiLogOut } from "react-icons/bi";
-import CreateChild from "./CreateChild";
+import CardCreation from "./CardCreation";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
@@ -19,13 +19,15 @@ const Sidebar = () => {
     { id: 3, name: "Mike Johnson", avatar: asset.boy_2 },
     { id: 3, name: "Mike Johnson", avatar: asset.boy_1 },
     { id: 3, name: "Mike Johnson", avatar: asset.boy_2 },
-    // Add more profiles as needed
   ];
 
   return (
     <div className="">
       {showCreateChild && (
-        <CreateChild onClose={() => setShowCreateChild(false)} />
+        <CardCreation
+          onClose={() => setShowCreateChild(false)}
+          avatarImage={asset.boy_1}
+        />
       )}
 
       <div

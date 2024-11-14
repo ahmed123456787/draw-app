@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import asset from "../assets/assets";
 
 const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Email:", email);
+    console.log("Password:", password);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row min-h-screen min-w-full">
       {/* The left container */}
@@ -9,12 +18,17 @@ const SignIn = () => {
         <h2 className="text-2xl lg:text-3xl text-bgColor mb-4 text-center font-semibold">
           Sign In
         </h2>
-        <form className="flex flex-col p-3 w-full max-w-xs">
+        <form
+          className="flex flex-col p-3 w-full max-w-xs"
+          onSubmit={handleSubmit} // Add the form submit handler
+        >
           <label className="text-sm lg:text-base text-bgColor mb-1">
             Email
           </label>
           <input
             type="email"
+            value={email} // Controlled input
+            onChange={() => setEmail(e.target.value)} // Update email on change
             placeholder="Enter your email"
             className="outline-none bg-slate-300 rounded-lg px-4 py-2 mb-4 text-gray-900"
           />
@@ -23,6 +37,8 @@ const SignIn = () => {
           </label>
           <input
             type="password"
+            value={password} // Controlled input
+            onChange={() => setPassword(e.target.value)} // Update password on change
             placeholder="Enter your password"
             className="outline-none bg-slate-300 rounded-lg px-4 py-2 text-gray-900"
           />
@@ -32,7 +48,7 @@ const SignIn = () => {
             </a>
           </div>
           <button
-            type="submit"
+            type="submit" // Form submit
             className="w-full bg-bgColor text-white text-lg py-2 rounded-2xl transition-colors hover:bg-opacity-90 font-semibold"
           >
             Sign In

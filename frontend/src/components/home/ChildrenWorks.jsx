@@ -1,6 +1,6 @@
 // ChildrenWorks.js
 import React from "react";
-import ChildCard from "./ChildCard";
+import FileCard from "./FileCard";
 import { BsFilterRight } from "react-icons/bs";
 
 const ChildrenWorks = ({ data }) => {
@@ -14,7 +14,7 @@ const ChildrenWorks = ({ data }) => {
       {/* Responsive grid layout */}
       <div className="grid grid-cols-2 lg:grid-cols-3  gap-2 lg:gap-4">
         {data.map((child) => (
-          <ChildCard key={child.childName} child={child} />
+          <FileCard key={child.childName} child={child} />
         ))}
       </div>
     </div>
