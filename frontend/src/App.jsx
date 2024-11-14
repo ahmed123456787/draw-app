@@ -1,12 +1,11 @@
-import SignChild from "./Pages/SignChild";
-import SignIn from "./Pages/SignIn";
-import HomeChild from "./Pages/HomeChild";
+import React from "react";
+import HomeChild from "./pages/HomeParent";
+import SignChild from "./pages/SignChild";
+import SignIn from "./pages/SignIn";
+import Archive from "./pages/Archive";
+
 function App() {
-  return (
-    <>
-      <HomeChild />
-    </>
-  );
+  return;
 }
 
 export default App;
