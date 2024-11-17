@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Sidebar from "../Components/home/Sidebar";
-import ChildrenWorks from "../Components/home/ChildrenWorks";
+import Sidebar from "../components/home/Sidebar";
+import ChildrenWorks from "../components/home/ChildrenWorks";
 import data from "../data";
 import assets from "./../assets/assets";
 
