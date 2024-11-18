@@ -3,10 +3,10 @@ const ShapeComponent = ({ icon: Icon, label, color,className }) => {
         <div className="flex flex-col items-center relative">
             {/* Icon container*/}
             <div
-                className={`lg:w-[80%] h-16 rounded-2xl flex items-center justify-center`}
+                className={` sm:w-[40%] md:w-[60%] lg:w-[80%] h-16 rounded-2xl flex items-center justify-center`}
                 style={{ backgroundColor: color }}
             >
-                <Icon className={`w-10 h-10 text-white ${className}`}/>
+                <Icon className={`w-10 h-10 text-white   ${className}`}/>
             </div>
             {/* Texte container*/}
             <div className="absolute bottom-0 py-1 -mb-4">

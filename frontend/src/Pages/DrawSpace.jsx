@@ -7,19 +7,21 @@ function DrawSpace() {
   return (
     <div className="h-screen">
       {/* Top Bar */}
-      <Topbar/>
+
+        <Topbar />
+     
       {/* Draw Space */}
-      <div className="h-[87%] w-full flex">
+      <div className="sm:h-[86%] md:h-[88%]  lg:h-[90%] flex">
         {/* Side Bar */}
-        <Sidebar/>
+        <Sidebar />
         {/* Draw Paper */}
-        <Drawingarea/>
+        <Drawingarea />
         {/* Color Bar */}
-        <Colorbar/>
+        <Colorbar />
       </div>
     </div>
   );
 }
 
 export default DrawSpace;
-{/* chaque conteniare et sa propre configuration dans ce contenaire  (div) */}
+{/* chaque conteniare et sa propre configuration dans ce contenaire  (div) */ }

@@ -8,7 +8,7 @@ import { CgShapeRhombus } from 'react-icons/cg';
 
 function Sidebar() {
     return (
-        <div className="w-[10%] sm:w-[10%] md:w-[8%] lg:w-[6%] h-full overflow-y-scroll space-y-10 pt-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <div className=" sm:w-[10%] md:w-[8%] lg:w-[6%] h-full overflow-y-scroll space-y-10 pt-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <ShapeComponent icon={PiLineVertical} label="Line" color="#A10EC0" className="rotate-45" />
             <ShapeComponent icon={PiArrowUpRightLight} label="Arrow" color="#2DCC70" />
             <ShapeComponent icon={CiStar} label="Star" color="rgb(244, 114, 182)" />
