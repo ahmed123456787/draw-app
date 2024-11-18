@@ -1,28 +1,62 @@
 import React, { useState } from "react";
+<<<<<<< HEAD
 import Sidebar from "../components/home/Sidebar";
 import ChildrenWorks from "../components/home/ChildrenWorks";
 import data from "../data";
+=======
+>>>>>>> 3ceac5bdb0dc92740c3ae52efb3c67e7484f6ed7
 import assets from "./../assets/assets";
+import FileCard from "../Components/home/FileCard";
+import data from "../data"; // Ensure this is an array of file objects
+import { MdOutlineAdd } from "react-icons/md";
+import CardCreation from "../Components/home/CardCreation";
 
 const HomeChild = () => {
-  const [username, setUsername] = useState("ahmed_99");
-  const [userProfile, setuserProfile] = useState(assets.boy_1);
+  const [username, setUsername] = useState("ahmed");
+  const [image, setImage] = useState(assets.boy_1);
+  const [showCreateDraw, setShowCreateDraw] = useState(false);
 
   return (
-    <div className="flex w-full min-h-screen">
-      {/* Sidebar - fixed position */}
-      <div className=" w-14 lg:w-52 h-screen fixed top-0 left-0 bg-bgColor rounded-br-3xl rounded-tr-3xl">
-        <Sidebar />
+    <div className={`w-full min-h-screen bg-gray-100 py-8 px-8 relative`}>
+      {/* Modal for creating a new card */}
+      {showCreateDraw && (
+        <CardCreation
+          onClose={() => setShowCreateDraw(false)}
+          avatarImage={assets.boy_1}
+          onSubmit={() => alert("Create card")}
+        />
+      )}
+      {/* Apply opacity only to the background content */}
+      <div className={`${showCreateDraw ? "opacity-100" : ""}`}>
+        <div className="flex space-x-3 mb-6">
+          <img
+            src={image}
+            className="rounded-full w-10 h-10 bg-cover"
+            alt="User"
+          />
+          <h2 className="text-bgColor text-2xl font-semibold">{username}</h2>
+        </div>
+
+        {/* Displaying multiple FileCard components */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {data.map((file, index) => (
+            <FileCard
+              key={index}
+              child={file} // Passing each file object to FileCard
+              showEditInfo={true}
+              showLockIcon={false}
+              showProfileImage={false}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Right container - takes remaining width and has padding to accommodate fixed sidebar */}
-      <div className="flex-1 ml-14 lg:ml-52 p-4">
-        <div className="flex justify-end space-x-3 mb-12">
-          <h2 className="text-bgColor">{username}</h2>
-          <img src={userProfile} className="w-6 h-6 rounded-full" />
-        </div>
-        <ChildrenWorks data={data} className="" />
-      </div>
+      {/* Floating Add Button */}
+      {console.log(showCreateDraw)}
+      <MdOutlineAdd
+        className="fixed bottom-10 right-10 bg-bgColor text-white rounded-full w-9 h-9 p-1 cursor-pointer"
+        onClick={() => setShowCreateDraw(true)} // Opens CardCreation modal
+      />
     </div>
   );
 };

@@ -3,7 +3,8 @@ import asset from "./../../assets/assets";
 import { FaRegFileArchive } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import { BiLogOut } from "react-icons/bi";
-import CreateChild from "./CreateChild";
+import CardCreation from "./CardCreation";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const [showCreateChild, setShowCreateChild] = useState(false);
@@ -18,13 +19,15 @@ const Sidebar = () => {
     { id: 3, name: "Mike Johnson", avatar: asset.boy_2 },
     { id: 3, name: "Mike Johnson", avatar: asset.boy_1 },
     { id: 3, name: "Mike Johnson", avatar: asset.boy_2 },
-    // Add more profiles as needed
   ];
 
   return (
     <div className="">
       {showCreateChild && (
-        <CreateChild onClose={() => setShowCreateChild(false)} />
+        <CardCreation
+          onClose={() => setShowCreateChild(false)}
+          avatarImage={asset.boy_1}
+        />
       )}
 
       <div
@@ -33,7 +36,7 @@ const Sidebar = () => {
         }`}
       >
         {/* My children */}
-        <div className="flex items-center space-x-2 mb-6">
+        <Link to="/" className="flex items-center  space-x-2 mb-6">
           <img
             src={asset.child_logo}
             alt="Logo"
@@ -42,7 +45,7 @@ const Sidebar = () => {
           <h2 className="text-xl font-bold text-white hidden lg:block ">
             My Children
           </h2>
-        </div>
+        </Link>
 
         {/* Scrollable area */}
         <div className="h-44 overflow-y-auto space-y-4 mb-6">
@@ -61,10 +64,10 @@ const Sidebar = () => {
         </div>
 
         {/* Archive */}
-        <div className="flex items-center space-x-2 mb-6">
+        <Link to="/archive" className="flex items-center space-x-2 mb-6">
           <FaRegFileArchive className="text-white w-6 h-6 lg:w-4 lg:h-4" />
           <h2 className="text-white hidden lg:block">Archive</h2>
-        </div>
+        </Link>
 
         {/* New Child */}
         <div
