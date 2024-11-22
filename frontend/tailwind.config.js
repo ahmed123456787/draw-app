@@ -4,6 +4,8 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      spacing:{
+      },
       colors: {
         bgColor: "#6173E4",
         greenColor:"#2DCC70",

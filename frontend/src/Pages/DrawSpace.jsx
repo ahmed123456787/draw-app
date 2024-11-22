@@ -11,7 +11,7 @@ function DrawSpace() {
         <Topbar />
      
       {/* Draw Space */}
-      <div className="sm:h-[86%] md:h-[88%]  lg:h-[90%] flex">
+      <div className="sm:h-[90%] md:h-[90%]  lg:h-[90%] h-[100%] flex">
         {/* Side Bar */}
         <Sidebar />
         {/* Draw Paper */}

@@ -1,16 +1,17 @@
 import { StrictMode } from 'react'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { createRoot } from "react-dom/client";
-import HomeParent from "./pages/HomeParent.jsx";
-import Archive from "./pages/Archive.jsx";
-import ErrorPage from "./pages/ErrorPage.jsx";
-import HomeChild from "./pages/HomeChild.jsx";
-import SingIn from "./pages/SignIn.jsx";
-import SignUp from "./pages/SignUp.jsx";
-import SignChild from "./pages/SignChild.jsx";
+import HomeParent from "./Pages/HomeParent.jsx";
+import Archive from "./Pages/Archive.jsx";
+import ErrorPage from "./Pages/ErrorPage.jsx";
+import HomeChild from "./Pages/HomeChild.jsx";
+import SingIn from "./Pages/SignIn.jsx";
+import SignUp from "./Pages/SignUp.jsx";
+import SignChild from "./Pages/SignChild.jsx";
 
 import "./index.css";
-import SignIn from "./pages/SignIn.jsx";
+import SignIn from "./Pages/SignIn.jsx";
+import DrawSpace from './Pages/DrawSpace.jsx';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,11 @@ const router = createBrowserRouter([
     path: "signIn-child",
     element: <SignChild />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path:"/draw-space",
+    element:<DrawSpace/>,
+    errorElement:<ErrorPage/>,
   },
 ]);
 

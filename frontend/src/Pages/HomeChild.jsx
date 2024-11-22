@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
 import Sidebar from "../components/home/Sidebar";
 import ChildrenWorks from "../components/home/ChildrenWorks";
-import data from "../data";
-=======
->>>>>>> 3ceac5bdb0dc92740c3ae52efb3c67e7484f6ed7
 import assets from "./../assets/assets";
-import FileCard from "../Components/home/FileCard";
+import FileCard from "../components/home/FileCard";
 import data from "../data"; // Ensure this is an array of file objects
 import { MdOutlineAdd } from "react-icons/md";
-import CardCreation from "../Components/home/CardCreation";
+import CardCreation from "../components/home/CardCreation";
 
 const HomeChild = () => {
   const [username, setUsername] = useState("ahmed");

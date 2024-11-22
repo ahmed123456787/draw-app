@@ -100,24 +100,15 @@ function DrawingArea() {
     setRectangles([]);
   };
 
-  return (
-    <div className="bg-gray-200 w-[80%] sm:w-[78%] md:w-[75%] lg:w-[88%] flex flex-col items-center justify-evenly">
+  return (  
+    <div className="bg-gray-200 w-[75%] sm:w-[80%] md:w-[80%] lg:w-[85%] h-full  flex flex-col items-center justify-evenly">
       {/* Drawing Area */}
       <div className="bg-white rounded-xl shadow-xl w-[90%] sm:w-[85%] md:w-[78%] lg:w-[70%] h-[70%] sm:h-[75%] md:h-[80%] lg:h-[85%] flex items-center justify-center">
-        <canvas
-          ref={canvasRef}
-          width="800"
-          height="500"
-          className="rounded-xl border"
-          onMouseDown={startDrawing}
-          onMouseMove={drawRectangle}
-          onMouseUp={stopDrawing}
-          onClick={handleCanvasClick}
-        />
+        
       </div>
 
       {/* Tools Section */}
-      <div className="bg-white sm:w-[15%] md:w-[20%] lg:w-[35%] h-[7%] rounded-2xl flex justify-around items-center">
+      <div className="bg-white sm:w-[40%] md:w-[40%] lg:w-[40%] h-[6%] w-[50%] rounded-2xl flex justify-around items-center">
         <FaEraser
           className={`text-sm sm:text-xl md:text-2xl lg:text-3xl ${isErasing ? 'text-red-500' : ''}`}
           onClick={() => setIsErasing((prev) => !prev)}
@@ -130,14 +121,14 @@ function DrawingArea() {
           }}
         />
         <GiPencil
-          className="text-base sm:text-2xl md:text-3xl lg:text-3xl"
+          className="text-lg sm:text-2xl md:text-3xl lg:text-3xl"
           onClick={() => {
             setPencilSize(4);
             setIsErasing(false);
           }}
         />
         <GiPencil
-          className="text-lg sm:text-3xl md:text-4xl lg:text-4xl"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl"
           onClick={() => {
             setPencilSize(6);
             setIsErasing(false);
