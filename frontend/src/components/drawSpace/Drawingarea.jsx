@@ -1,144 +1,107 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from "react";
+import { Stage, Layer, Rect, Circle, Line, Star, RegularPolygon } from "react-konva";
 import { FaEraser } from 'react-icons/fa';
 import { GiPencil } from 'react-icons/gi';
 
-function DrawingArea() {
-  const canvasRef = useRef(null);
-  const [rectangles, setRectangles] = useState([]);
+function Drawingarea({ selectedShape, ColorShape }) {
+  const [shapes, setShapes] = useState([]);
+  const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
-  const [pencilSize, setPencilSize] = useState(2); // Default pencil size
-  const [isErasing, setIsErasing] = useState(false);
 
-  // Helper function to check if a point is inside a rectangle
-  const isPointInRectangle = (point, rectangle) => {
-    const { x, y } = point;
-    const { x: rectX, y: rectY, width, height } = rectangle;
-    return x >= rectX && x <= rectX + width && y >= rectY && y <= rectY + height;
-  };
+  const handleMouseDown = (e) => {
+    const stage = e.target.getStage();
+    const { x, y } = stage.getPointerPosition();
 
-  // Start drawing
-  const startDrawing = (event) => {
-    if (isErasing) return; // Prevent drawing in erase mode
-    const { offsetX, offsetY } = event.nativeEvent;
-    setStartPoint({ x: offsetX, y: offsetY });
+    setCurrentShape({ x, y, width: 0, height: 0, color: ColorShape });
     setIsDrawing(true);
   };
 
-  // Draw rectangle dynamically
-  const drawRectangle = (event) => {
-    if (!isDrawing) return;
+  const handleMouseMove = (e) => {
+    if (!isDrawing || !currentShape) return;
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const { offsetX, offsetY } = event.nativeEvent;
+    const stage = e.target.getStage();
+    const { x, y } = stage.getPointerPosition();
 
-    // Clear and redraw all existing rectangles
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    rectangles.forEach(({ x, y, width, height, size }) => {
-      ctx.lineWidth = size;
-      ctx.strokeRect(x, y, width, height);
-    });
-
-    // Draw the rectangle being created
-    const width = offsetX - startPoint.x;
-    const height = offsetY - startPoint.y;
-    ctx.lineWidth = pencilSize;
-    ctx.strokeStyle = 'black';
-    ctx.strokeRect(startPoint.x, startPoint.y, width, height);
+    setCurrentShape((prev) => ({
+      ...prev,
+      width: x - prev.x,
+      height: y - prev.y,
+    }));
   };
 
-  // Finalize rectangle and store it
-  const stopDrawing = (event) => {
-    if (!isDrawing) return;
-
-    const { offsetX, offsetY } = event.nativeEvent;
-    const width = offsetX - startPoint.x;
-    const height = offsetY - startPoint.y;
-
-    setRectangles((prev) => [
-      ...prev,
-      { x: startPoint.x, y: startPoint.y, width, height, size: pencilSize },
-    ]);
+  const handleMouseUp = () => {
+    if (currentShape) {
+      setShapes([...shapes, { ...currentShape, type: selectedShape }]);
+    }
+    setCurrentShape(null);
     setIsDrawing(false);
   };
 
-  // Handle rectangle click for erasing
-  const handleCanvasClick = (event) => {
-    if (!isErasing) return;
+  const renderShape = (shape, key) => {
+    const { x, y, width, height, type, color } = shape;
+    switch (type) {
+      case "Rectangle":
+        return <Rect key={key} x={x} y={y} width={width} height={height} fill={color} />;
+      case "Circle":
+        return <Circle key={key} x={x + width / 2} y={y + height / 2} radius={Math.abs(width / 2)} fill={color} />;
+      case "Line":
+        return <Line key={key} points={[x, y, x + width, y + height]} stroke={color} />;
+      case "Star":
+        return <Star key={key} x={x + width / 2} y={y + height / 2} numPoints={5} innerRadius={Math.abs(width / 4)} outerRadius={Math.abs(width / 2)} fill={color} />;
+      case "Arrow":
+  return (
+    <>
+      {/* Ligne de la flèche */}
+      <Line
+        key={key}
+        points={[x, y, x + width, y + height]}  // Coordonnées de la ligne
+        stroke={ColorShape}  // Couleur de la ligne
+        strokeWidth={3}  // Épaisseur de la ligne
+        lineCap="round"  // Cap arrondi pour une ligne plus douce
+        lineJoin="round"  // Jointure arrondie pour une transition fluide
+      />
+    </>
+  );
 
-    const { offsetX, offsetY } = event.nativeEvent;
-    const clickPoint = { x: offsetX, y: offsetY };
-
-    // Find the index of the first rectangle containing the click point
-    const rectangleIndex = rectangles.findIndex((rect) =>
-      isPointInRectangle(clickPoint, rect)
-    );
-
-    if (rectangleIndex === -1) return; // Exit if no rectangle was clicked
-
-    // Remove the selected rectangle from the state
-    const updatedRectangles = rectangles.filter((_, index) => index !== rectangleIndex);
-    setRectangles(updatedRectangles);
-
-    // Redraw the canvas with remaining rectangles
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    updatedRectangles.forEach(({ x, y, width, height, size }) => {
-      ctx.lineWidth = size;
-      ctx.strokeStyle = 'black';
-      ctx.strokeRect(x, y, width, height);
-    });
-  };
-
-  // Clear all rectangles
-  const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setRectangles([]);
-  };
-
-  return (  
-    <div className="bg-gray-200 w-[75%] sm:w-[80%] md:w-[80%] lg:w-[85%] h-full  flex flex-col items-center justify-evenly">
-      {/* Drawing Area */}
-      <div className="bg-white rounded-xl shadow-xl w-[90%] sm:w-[85%] md:w-[78%] lg:w-[70%] h-[70%] sm:h-[75%] md:h-[80%] lg:h-[85%] flex items-center justify-center">
         
+      case "Triangle":
+        return <RegularPolygon key={key} x={x + width / 2} y={y + height / 2} sides={3} radius={Math.abs(width / 2)} fill={color} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="bg-gray-200 w-[75%] sm:w-[80%] md:w-[80%] lg:w-[85%] h-full flex flex-col items-center justify-evenly">
+      <div className="bg-white rounded-xl shadow-xl w-[90%] sm:w-[85%] md:w-[78%] lg:w-[70%] h-[70%] sm:h-[75%] md:h-[80%] lg:h-[85%] flex items-center justify-center">
+        <Stage
+          width={window.innerWidth * 0.595} // Adjust canvas width to match the container
+          height={window.innerHeight * 0.765} // Adjust canvas height to match the container
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          style={{ border: "1px solid", borderRadius: "12px", backgroundColor: "#fffff" }} // Optional styles for the canvas
+        >
+          <Layer>
+            {shapes.map((shape, i) => renderShape(shape, i))}
+            {currentShape && renderShape({ ...currentShape, type: selectedShape }, "current")}
+          </Layer>
+        </Stage>
       </div>
 
       {/* Tools Section */}
       <div className="bg-white sm:w-[40%] md:w-[40%] lg:w-[40%] h-[6%] w-[50%] rounded-2xl flex justify-around items-center">
+        {/* Eraser */}
         <FaEraser
-          className={`text-sm sm:text-xl md:text-2xl lg:text-3xl ${isErasing ? 'text-red-500' : ''}`}
-          onClick={() => setIsErasing((prev) => !prev)}
+          className="cursor-pointer text-sm sm:text-xl md:text-2xl lg:text-3xl"
         />
-        <GiPencil
-          className="text-sm sm:text-xl md:text-2xl lg:text-2xl"
-          onClick={() => {
-            setPencilSize(2);
-            setIsErasing(false);
-          }}
-        />
-        <GiPencil
-          className="text-lg sm:text-2xl md:text-3xl lg:text-3xl"
-          onClick={() => {
-            setPencilSize(4);
-            setIsErasing(false);
-          }}
-        />
-        <GiPencil
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl"
-          onClick={() => {
-            setPencilSize(6);
-            setIsErasing(false);
-          }}
-        />
-
-         
+        {/* Pencil Sizes */}
+        <GiPencil className="text-sm sm:text-xl md:text-2xl lg:text-2xl" />
+        <GiPencil className="text-lg sm:text-2xl md:text-3xl lg:text-3xl" />
+        <GiPencil className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl" />
       </div>
     </div>
   );
 }
 
-export default DrawingArea;
+export default Drawingarea;
