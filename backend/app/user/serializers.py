@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user   
     
     
-class ChildCreationSerializer(serializers.ModelSerializer):
+class ChildSerializer(serializers.ModelSerializer):
     class Meta:
         model = Child    
         fields = ["name","token"]

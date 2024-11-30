@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.conf import settings
-
+from datetime import datetime
 
 
 class UserManager(BaseUserManager):
@@ -65,11 +65,17 @@ class Draw(models.Model):
     """The draw model"""
     name = models.CharField(max_length=30)
     draw_content = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_locked = models.BooleanField(default=False)
+    is_archived = models.BooleanField(default=False)
     child = models.ForeignKey(
         Child,
         on_delete=models.CASCADE,
         related_name="draw"
     )
+    
+    class Meta:
+        unique_together = ("name", "child")
     
     def __str__(self):
             return self.name

@@ -8,11 +8,11 @@ from rest_framework_simplejwt.views import (
 )
 
 router = DefaultRouter()
-router.register(r'children', ChildCreateView, basename='child')
+router.register(r'child', ChildCreateDeleteView, basename='child')
 
-urlpatterns = [
+urlpatterns = [ 
     path('', include(router.urls)),
-    path("register-child/",TokenChildVerificationView.as_view()),
+    path("child-register/",ChildCreateSessionView.as_view()),
     path("create/",UserCreateView.as_view(),name="create-user"),
     path("modify/",ManagerUserView.as_view(),name="modify-user"),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
