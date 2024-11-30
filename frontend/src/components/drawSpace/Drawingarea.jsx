@@ -1,83 +1,107 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from "react";
+import { Stage, Layer, Rect, Circle, Line, Star, RegularPolygon } from "react-konva";
 import { FaEraser } from 'react-icons/fa';
 import { GiPencil } from 'react-icons/gi';
 
-function DrawingArea() {
-  const fabric = require('fabric').fabric;
-  const canvasRef = useRef(null); // Référence pour le conteneur du canevas
-  const [fabricCanvas, setFabricCanvas] = useState(null); // Instance de Fabric.js
-  const [brushSize, setBrushSize] = useState(5); // Taille du pinceau
-  const [isEraser, setIsEraser] = useState(false); 
+function Drawingarea({ selectedShape, ColorShape }) {
+  const [shapes, setShapes] = useState([]);
+  const [currentShape, setCurrentShape] = useState(null);
+  const [isDrawing, setIsDrawing] = useState(false);
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      // Initialiser le canevas Fabric.js
-      const canvas = new fabric.Canvas(canvasRef.current, {
-        isDrawingMode: true, // Activer le mode dessin
-      });
-      canvas.freeDrawingBrush.width = brushSize; // Définir la taille du pinceau
-      canvas.freeDrawingBrush.color = '#000000'; // Couleur initiale du pinceau
+  const handleMouseDown = (e) => {
+    const stage = e.target.getStage();
+    const { x, y } = stage.getPointerPosition();
 
-      setFabricCanvas(canvas);
+    setCurrentShape({ x, y, width: 0, height: 0, color: ColorShape });
+    setIsDrawing(true);
+  };
 
-      // Nettoyer l'instance de Fabric.js au démontage du composant
-      return () => {
-        canvas.dispose();
-      };
+  const handleMouseMove = (e) => {
+    if (!isDrawing || !currentShape) return;
+
+    const stage = e.target.getStage();
+    const { x, y } = stage.getPointerPosition();
+
+    setCurrentShape((prev) => ({
+      ...prev,
+      width: x - prev.x,
+      height: y - prev.y,
+    }));
+  };
+
+  const handleMouseUp = () => {
+    if (currentShape) {
+      setShapes([...shapes, { ...currentShape, type: selectedShape }]);
     }
-  }, []);
+    setCurrentShape(null);
+    setIsDrawing(false);
+  };
 
-  useEffect(() => {
-    if (fabricCanvas) {
-      fabricCanvas.freeDrawingBrush.width = brushSize; // Mettre à jour la taille du pinceau
+  const renderShape = (shape, key) => {
+    const { x, y, width, height, type, color } = shape;
+    switch (type) {
+      case "Rectangle":
+        return <Rect key={key} x={x} y={y} width={width} height={height} fill={color} />;
+      case "Circle":
+        return <Circle key={key} x={x + width / 2} y={y + height / 2} radius={Math.abs(width / 2)} fill={color} />;
+      case "Line":
+        return <Line key={key} points={[x, y, x + width, y + height]} stroke={color} />;
+      case "Star":
+        return <Star key={key} x={x + width / 2} y={y + height / 2} numPoints={5} innerRadius={Math.abs(width / 4)} outerRadius={Math.abs(width / 2)} fill={color} />;
+      case "Arrow":
+  return (
+    <>
+      {/* Ligne de la flèche */}
+      <Line
+        key={key}
+        points={[x, y, x + width, y + height]}  // Coordonnées de la ligne
+        stroke={ColorShape}  // Couleur de la ligne
+        strokeWidth={3}  // Épaisseur de la ligne
+        lineCap="round"  // Cap arrondi pour une ligne plus douce
+        lineJoin="round"  // Jointure arrondie pour une transition fluide
+      />
+    </>
+  );
+
+        
+      case "Triangle":
+        return <RegularPolygon key={key} x={x + width / 2} y={y + height / 2} sides={3} radius={Math.abs(width / 2)} fill={color} />;
+      default:
+        return null;
     }
-  }, [brushSize]);
-
-  useEffect(() => {
-    if (fabricCanvas) {
-      fabricCanvas.freeDrawingBrush.color = isEraser ? '#ffffff' : '#000000'; // Blanc pour effacer
-    }
-  }, [isEraser]);
-
-  const toggleEraser = () => {
-    setIsEraser(!isEraser);
   };
 
   return (
     <div className="bg-gray-200 w-[75%] sm:w-[80%] md:w-[80%] lg:w-[85%] h-full flex flex-col items-center justify-evenly">
-      {/* Drawing Area */}
-      <div
-        className="bg-white rounded-xl shadow-xl w-[90%] sm:w-[85%] md:w-[78%] lg:w-[70%] h-[70%] sm:h-[75%] md:h-[80%] lg:h-[85%] flex items-center justify-center"
-      >
-        <canvas
-          ref={canvasRef}
-          width="800" // Largeur du canevas
-          height="600" // Hauteur du canevas
-        ></canvas>
+      <div className="bg-white rounded-xl shadow-xl w-[90%] sm:w-[85%] md:w-[78%] lg:w-[70%] h-[70%] sm:h-[75%] md:h-[80%] lg:h-[85%] flex items-center justify-center">
+        <Stage
+          width={window.innerWidth * 0.595} // Adjust canvas width to match the container
+          height={window.innerHeight * 0.765} // Adjust canvas height to match the container
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          style={{ border: "1px solid", borderRadius: "12px", backgroundColor: "#fffff" }} // Optional styles for the canvas
+        >
+          <Layer>
+            {shapes.map((shape, i) => renderShape(shape, i))}
+            {currentShape && renderShape({ ...currentShape, type: selectedShape }, "current")}
+          </Layer>
+        </Stage>
       </div>
 
       {/* Tools Section */}
       <div className="bg-white sm:w-[40%] md:w-[40%] lg:w-[40%] h-[6%] w-[50%] rounded-2xl flex justify-around items-center">
         {/* Eraser */}
         <FaEraser
-          onClick={toggleEraser}
-          className={`cursor-pointer text-sm sm:text-xl md:text-2xl lg:text-3xl ${
-            isEraser ? 'text-red-500' : ''
-          }`}
+          className="cursor-pointer text-sm sm:text-xl md:text-2xl lg:text-3xl"
         />
         {/* Pencil Sizes */}
-        {[2, 5, 10, 15].map((size, index) => (
-          <GiPencil
-            key={index}
-            onClick={() => setBrushSize(size)}
-            className={`cursor-pointer text-sm sm:text-xl md:text-2xl lg:text-3xl ${
-              brushSize === size ? 'text-blue-500' : ''
-            }`}
-          />
-        ))}
+        <GiPencil className="text-sm sm:text-xl md:text-2xl lg:text-2xl" />
+        <GiPencil className="text-lg sm:text-2xl md:text-3xl lg:text-3xl" />
+        <GiPencil className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl" />
       </div>
     </div>
   );
 }
 
-export default DrawingArea;
+export default Drawingarea;

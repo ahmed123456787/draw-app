@@ -8,10 +8,11 @@ import HomeChild from "./Pages/HomeChild.jsx";
 import SingIn from "./Pages/SignIn.jsx";
 import SignUp from "./Pages/SignUp.jsx";
 import SignChild from "./Pages/SignChild.jsx";
-
+import App from "./App.jsx";
 import "./index.css";
 import SignIn from "./Pages/SignIn.jsx";
-import DrawSpace from './Pages/DrawSpace.jsx';
+import DrawSpace from "./Pages/DrawSpace.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <HomeParent />,
+    element: <App />,
   },
   {
     path: "/signIn",
@@ -41,9 +42,9 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path:"/draw-space",
-    element:<DrawSpace/>,
-    errorElement:<ErrorPage/>,
+    path: "/draw-space",
+    element: <DrawSpace />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
