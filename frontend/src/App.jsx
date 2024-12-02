@@ -1,30 +1,70 @@
 import React, { useState } from "react";
-import { render } from "react-dom";
-import { Stage, Layer, Rect, Text } from "react-konva";
-import Konva from "konva";
-import { createRoot } from "react-dom/client";
-
-const ColoredRect = () => {
-  const [color, setColor] = useState("green");
-
-  const handleClick = () => {
-    setColor(Konva.Util.getRandomColor());
-  };
-
-  return (
-    <Rect
-      x={20}
-      y={20}
-      width={50}
-      height={50}
-      fill={color}
-      shadowBlur={5}
-      onClick={handleClick}
-    />
-  );
-};
+import { Stage, Layer, Rect, Circle } from "react-konva";
 
 const App = () => {
+  const [rectangles, setRectangles] = useState([]);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [currentRect, setCurrentRect] = useState(null);
+  const [resizeIndex, setResizeIndex] = useState(null);
+
+  const handleMouseDown = (e) => {
+    const stage = e.target.getStage();
+    const { x, y } = stage.getPointerPosition();
+
+    // Check if we are resizing
+    if (resizeIndex !== null) return;
+    // Start drawing a new rectangle
+    setCurrentRect({ x, y, width: 0, height: 0 });
+    setIsDrawing(true);
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDrawing) {
+      const stage = e.target.getStage();
+      const { x, y } = stage.getPointerPosition();
+      setCurrentRect((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          width: x - prev.x,
+          height: y - prev.y,
+        };
+      });
+    }
+    if (resizeIndex !== null) {
+      const stage = e.target.getStage();
+      const { x, y } = stage.getPointerPosition();
+      setRectangles((prev) =>
+        prev.map((rect, i) =>
+          i === resizeIndex
+            ? {
+                ...rect,
+                width: Math.max(10, x - rect.x),
+                height: Math.max(10, y - rect.y),
+              }
+            : rect
+        )
+      );
+    }
+  };
+  const handleMouseUp = () => {
+    if (isDrawing) {
+      setRectangles((prev) => [...prev, { ...currentRect, draggable: true }]);
+      setCurrentRect(null);
+      setIsDrawing(false);
+    }
+    setResizeIndex(null);
+  };
+  const handleDragEnd = (index, e) => {
+    const { x, y } = e.target.position();
+    setRectangles((prev) =>
+      prev.map((rect, i) => (i === index ? { ...rect, x, y } : rect))
+    );
+  };
+  const handleResizeStart = (index) => {
+    setResizeIndex(index);
+  };
+
   return (
     <>
       <Stage

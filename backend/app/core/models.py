@@ -57,7 +57,7 @@ class Child(models.Model):
         unique_together = ('parent', 'name')  # Ensure parent + name is unique
     
     def __str__(self):
-        return f"{self.name} is the son of {self.parent}"
+        return f"{self.name} p => {self.parent}"
     
     
     

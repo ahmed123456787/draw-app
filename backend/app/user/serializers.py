@@ -31,7 +31,8 @@ class UserSerializer(serializers.ModelSerializer):
 class ChildSerializer(serializers.ModelSerializer):
     class Meta:
         model = Child    
-        fields = ["name","token"]
+        fields = ["id","name","token"]
+        read_only_fields=["id"]
         extra_kwargs = {"token":{"read_only":True}}
 
     
