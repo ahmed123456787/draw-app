@@ -24,7 +24,7 @@ jobs:
 
     - name: Run Tests
       run: |
-        python manage.py backend\app\test
+        python ./backend/app/manage.py test
 
     
     
