@@ -1,0 +1,12 @@
+## Python
+__pycache__
+
+## Environment Variables
+.env
+/env
+
+## Temporary Files
+TEMP_FILES
+
+## Virtual Environment
+env

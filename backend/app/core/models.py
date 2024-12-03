@@ -33,7 +33,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     username = models.CharField(max_length=30,unique=True)
     email = models.EmailField(unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
-    password = models.CharField(max_length=30)
+    password = models.CharField(max_length=300) 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     image = models.ImageField(null=True,blank=True)
@@ -48,7 +48,7 @@ class User(AbstractBaseUser,PermissionsMixin):
             
 class Child(models.Model):
     """Define the child model"""
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=20)
     parent = models.ForeignKey(User, on_delete=models.CASCADE, related_name="children",null=True,blank=True)
     token = models.CharField(max_length=50, null=False, blank=False)
     image = models.ImageField(null=True,blank=True)
