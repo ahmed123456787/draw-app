@@ -20,5 +20,5 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Tests
-        working-directory: app/deployment/dev
-        run: docker compose -f docker-compose.yml run --rm app sh -c "python manage.py test"
+        working-directory: backend
+        run: docker compose -f deployment/dev/docker-compose.yml run --rm app sh -c "python manage.py test"
