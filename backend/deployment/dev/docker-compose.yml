@@ -5,7 +5,7 @@ services:
     ports: 
       - "8000:8000"
     volumes:
-      - ./app:/app  # Syncs local app changes with the container
+      - ../../app:/usr/src/app  # Syncs local app changes with the container
       - dev-static-app:/vol/web
     command: 
       sh -c "python manage.py migrate && 

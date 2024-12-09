@@ -30,7 +30,7 @@ class DrawChildViewSet(ModelViewSet):
         """retreive draws for the authenticated child"""
         
         if not self._is_authenticated():
-            return Response({"message": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"message": "Not authorized"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
         serializer = self.get_serializer(Draw.objects.all(),many=True)
@@ -181,7 +181,7 @@ class DrawParentView(GenericViewSet,
                      RetrieveModelMixin,
                      DestroyModelMixin,
                      UpdateModelMixin):
-    """Update and delete the draw of the child"""
+    """Update, delete, retreive and list the draw of the child"""
     
     serializer_class = DrawParentSerializer
     queryset = Draw.objects.all()

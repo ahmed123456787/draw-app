@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r"child/draws",DrawChildViewSet, basename="child-draw")
 
+app_name="draw"
 
 urlpatterns = [
     path("parent/draws/", DrawParentView.as_view({'get': 'list'}), name="parent-draws"),
