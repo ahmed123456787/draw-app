@@ -21,8 +21,7 @@ function Colorbar({setColorShape}) {
                             style={{ backgroundColor: color ,cursor:'pointer', marginInline:'auto', border: color === activeColor ? "1px solid" : "none",}}
                             className="w-[80%] h-10 rounded-2xl"
                             onClick={()=>{setColorShape(color);
-
-                                            setActiveColor(color);
+                                setActiveColor(color);
                             }}
 
                         ></div>

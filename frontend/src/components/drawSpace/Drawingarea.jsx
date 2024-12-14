@@ -3,13 +3,12 @@ import { Stage, Layer, Rect, Circle, Line, Star, RegularPolygon } from "react-ko
 import { FaEraser } from 'react-icons/fa';
 import { GiPencil } from 'react-icons/gi';
 
-function Drawingarea({ selectedShape, ColorShape }) {
-  const [shapes, setShapes] = useState([]);
+function Drawingarea({ selectedShape, ColorShape,setShapes,shapes }) {
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [borderSize, setborderSize] = useState(2)
   const [isEraserActive, setIsEraserActive] = useState(false);
-
+  
   const handleMouseDown = (e) => {
     const stage = e.target.getStage();
     const { x, y } = stage.getPointerPosition();
@@ -32,15 +31,16 @@ function Drawingarea({ selectedShape, ColorShape }) {
   };
 
   const handleMouseUp = () => {
-
     if (currentShape) {
-      setShapes([...shapes, { ...currentShape, type: selectedShape ,borderSize}]);
+      // Ajoutez la nouvelle forme à l'état `shapes`
+      setShapes((prevShapes) => [...prevShapes, { ...currentShape, type: selectedShape, borderSize }]);
     }
     setCurrentShape(null);
     setIsDrawing(false);
   };
+  
 
-  const renderShape = (shape, key, bs) => {
+  const renderShape = (shape, key) => {
     const { x, y, width, height, type, color,borderSize } = shape;
 
     const handleClick = () => {
@@ -48,18 +48,31 @@ function Drawingarea({ selectedShape, ColorShape }) {
         setShapes((prevShapes) => prevShapes.filter((_, index) => index !== key));
       }
     };
+    const handleDragStart = () => {
+      setIsDrawing(false); 
+    };
+    const handleDragEnd = (e) => {
+      const { x, y } = e.target.position();
+      setShapes((prevShapes) =>
+        prevShapes.map((s, index) =>
+          index === key ? { ...s, x, y } : s
+        )
+        
+      );
+      setIsDrawing(true);
+    };
 
     switch (type) {
       case "Rectangle":
-        return <Rect key={key} x={x} y={y} width={width} height={height} fill={color} stroke="black" strokeWidth={borderSize} onClick={handleClick} />;
+        return <Rect key={key} x={x} y={y} width={width} height={height} fill={color} stroke="black" strokeWidth={borderSize} onClick={handleClick} onDragStart={handleDragStart} onDragEnd={handleDragEnd} />;
       case "Circle":
-        return <Circle key={key} x={x + width / 2} y={y + height / 2} radius={Math.abs(width / 2)} fill={color} stroke="black" strokeWidth={borderSize} onClick={handleClick} />;
+        return <Circle key={key} x={x + width / 2} y={y + height / 2} radius={Math.abs(width / 2)} fill={color} stroke="black" strokeWidth={borderSize} onClick={handleClick} onDragStart={handleDragStart} onDragEnd={handleDragEnd} />;
       case "Line":
-        return <Line key={key} points={[x, y, x + width, y + height]} stroke={color} strokeWidth={borderSize} onClick={handleClick} />;
+        return <Line key={key} points={[x, y, x + width, y + height]} stroke={color} strokeWidth={borderSize} onClick={handleClick} onDragStart={handleDragStart}  onDragEnd={handleDragEnd}  />;
       case "Star":
-        return <Star key={key} x={x + width / 2} y={y + height / 2} numPoints={5} stroke="black" strokeWidth={borderSize} innerRadius={Math.abs(width / 4)} outerRadius={Math.abs(width / 2)} fill={color} onClick={handleClick} />;
+        return <Star key={key} x={x + width / 2} y={y + height / 2} numPoints={5} stroke="black" strokeWidth={borderSize} innerRadius={Math.abs(width / 4)} outerRadius={Math.abs(width / 2)} fill={color} onClick={handleClick} onDragStart={handleDragStart}  onDragEnd={handleDragEnd} />;
       case "Triangle":
-        return <RegularPolygon key={key} x={x + width / 2} y={y + height / 2} sides={3} radius={Math.abs(width / 2)} fill={color} stroke="black" strokeWidth={borderSize} onClick={handleClick} />;
+        return <RegularPolygon key={key} x={x + width / 2} y={y + height / 2} sides={3} radius={Math.abs(width / 2)} fill={color} stroke="black" strokeWidth={borderSize} onClick={handleClick} onDragStart={handleDragStart}  onDragEnd={handleDragEnd}/>;
       default:
         return null;
     }
@@ -97,6 +110,9 @@ function Drawingarea({ selectedShape, ColorShape }) {
           className={`text-sm sm:text-xl md:text-2xl lg:text-2xl w-10 ${borderSize === 3 &&isEraserActive==false ? 'bg-gray-300 rounded-lg' : ''}`}
           onClick={() => {
             setborderSize(3);
+            if(borderSize==3){
+              setborderSize(2)
+            }
             if (isEraserActive) {
               setIsEraserActive(false);
             }
@@ -106,6 +122,9 @@ function Drawingarea({ selectedShape, ColorShape }) {
           className={`text-lg sm:text-2xl md:text-3xl lg:text-3xl w-10 ${borderSize === 4 &&isEraserActive==false ? 'bg-gray-300 rounded-lg' : ''}`}
           onClick={() => {
             setborderSize(4);
+            if(borderSize==4){
+              setborderSize(2)
+            }
             if (isEraserActive) {
               setIsEraserActive(false);
             }
@@ -115,6 +134,9 @@ function Drawingarea({ selectedShape, ColorShape }) {
           className={`text-2xl sm:text-3xl md:text-4xl lg:text-4xl w-10 ${borderSize === 7 &&isEraserActive==false ? 'bg-gray-300 rounded-lg' : ''}`}
           onClick={() => {
             setborderSize(7);
+            if(borderSize==7){
+              setborderSize(2)
+            }
             if (isEraserActive) {
               setIsEraserActive(false);
             }

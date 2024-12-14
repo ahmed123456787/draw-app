@@ -4,6 +4,21 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      animation: {
+        slideDown: 'slideDown 1s ease-out forwards',
+      },
+      keyframes: {
+        slideDown: {
+          '0%': {
+            transform: 'translateY(-100%)',
+            opacity: 0,
+          },
+          '100%': {
+            transform: 'translateY(0)',
+            opacity: 1,
+          },
+        },
+      } ,
       spacing:{
       },
       colors: {
@@ -13,7 +28,13 @@ export default {
         whiteBlueColor:"#4ECDC4",
         blueColor:"#3498DB",
         purpleColor:"#9B59B6",
-        grayColor:"#95A5A6"
+        grayColor:"#95A5A6",
+        whiteBlueColor:"#DEE1FF",
+        whitePink:"#FFDDCE"
+      },
+      backgroundImage: {
+        'landing-page-gradiant': 'linear-gradient(344.05deg, #FFDDCE -6.31%, #909EF5 53.39%)',
+         
       },
     },
   },

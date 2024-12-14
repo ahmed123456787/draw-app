@@ -4,7 +4,7 @@ import { LuSave } from 'react-icons/lu';
 import { AiOutlineFileAdd } from 'react-icons/ai';
 import { RiArrowGoBackFill, RiArrowGoForwardFill } from 'react-icons/ri';
 
-function Topbar() {
+function Topbar({handlesave}) {
     return (
 
         <div className="bg-bgColor w-full  sm:h-[10%] md:h-[10%] lg:h-[10%] h-[8%] flex items-center justify-between">
@@ -19,10 +19,10 @@ function Topbar() {
             </div>
             {/* File Manipulation Buttons */}
             <div className="flex justify-evenly items-center sm:w-[40%] md:w-[40%] lg:w-[30%] w-[40%]">
-                <LuSave className="bg-greenColor text-white sm:text-3xl  md:text-4xl lg:text-4xl text-3xl p-1 rounded-lg" />
-                <AiOutlineFileAdd className="bg-yellowColor text-white  sm:text-3xl  md:text-4xl lg:text-4xl text-3xl p-1 rounded-lg" />
-                <RiArrowGoBackFill ckFill className="bg-purple-400 text-white  sm:text-3xl  md:text-4xl lg:text-4xl text-3xl p-1  rounded-lg" />
-                <RiArrowGoForwardFill className="bg-pink-400 text-white  sm:text-3xl  md:text-4xl lg:text-4xl text-3xl p-1 rounded-lg" />
+                <LuSave className="bg-greenColor text-white sm:text-3xl  md:text-4xl lg:text-4xl text-3xl p-1 rounded-lg cursor-pointer"  onClick={handlesave}/>
+                <AiOutlineFileAdd className="bg-yellowColor text-white  sm:text-3xl  md:text-4xl lg:text-4xl text-3xl p-1 rounded-lg cursor-pointer" />
+                <RiArrowGoBackFill ckFill className="bg-purple-400 text-white  sm:text-3xl  md:text-4xl lg:text-4xl text-3xl p-1  rounded-lg cursor-pointer" />
+                <RiArrowGoForwardFill className="bg-pink-400 text-white  sm:text-3xl  md:text-4xl lg:text-4xl text-3xl p-1 rounded-lg cursor-pointer" />
             </div>
         </div>
     )
