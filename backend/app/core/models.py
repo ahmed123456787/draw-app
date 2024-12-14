@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.conf import settings
-
+from datetime import datetime
 
 
 class UserManager(BaseUserManager):
@@ -33,7 +33,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     username = models.CharField(max_length=30,unique=True)
     email = models.EmailField(unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
-    password = models.CharField(max_length=30)
+    password = models.CharField(max_length=300) 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     image = models.ImageField(null=True,blank=True)
@@ -48,7 +48,7 @@ class User(AbstractBaseUser,PermissionsMixin):
             
 class Child(models.Model):
     """Define the child model"""
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=20)
     parent = models.ForeignKey(User, on_delete=models.CASCADE, related_name="children",null=True,blank=True)
     token = models.CharField(max_length=50, null=False, blank=False)
     image = models.ImageField(null=True,blank=True)
@@ -57,7 +57,7 @@ class Child(models.Model):
         unique_together = ('parent', 'name')  # Ensure parent + name is unique
     
     def __str__(self):
-        return f"{self.name} is the son of {self.parent}"
+        return f"{self.name} p => {self.parent}"
     
     
     
@@ -65,11 +65,17 @@ class Draw(models.Model):
     """The draw model"""
     name = models.CharField(max_length=30)
     draw_content = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_locked = models.BooleanField(default=False)
+    is_archived = models.BooleanField(default=False)
     child = models.ForeignKey(
         Child,
         on_delete=models.CASCADE,
         related_name="draw"
     )
+    
+    class Meta:
+        unique_together = ("name", "child")
     
     def __str__(self):
             return self.name
