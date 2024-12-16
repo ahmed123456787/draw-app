@@ -30,10 +30,12 @@ export default {
         purpleColor:"#9B59B6",
         grayColor:"#95A5A6",
         whiteBlueColor:"#DEE1FF",
-        whitePink:"#FFDDCE"
+        whitePink:"#FFDDCE",
+        blueGray:"#C5C8ED"
       },
       backgroundImage: {
         'landing-page-gradiant': 'linear-gradient(344.05deg, #FFDDCE -6.31%, #909EF5 53.39%)',
+        'gray-gradiant':'linear-gradient(90deg, #C5C8ED 0%, #59597A 100%)'
          
       },
     },

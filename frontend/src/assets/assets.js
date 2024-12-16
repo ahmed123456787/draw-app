@@ -9,6 +9,8 @@ import logo from "./LOGO.svg"
 import logoparent from "./parent.png"
 import colorslogo from "./clolors_icon.png"
 import staremogie from "./star.png"
+import mailIcon from "./mailIcon.svg"
+import locationIcon from "./locationIcon.svg"
 
 const images = {
   singIn_background,
@@ -22,6 +24,8 @@ const images = {
   staremogie,
   colorslogo,
   logoparent,
+  mailIcon,
+  locationIcon,
 };
 
 export default images;
