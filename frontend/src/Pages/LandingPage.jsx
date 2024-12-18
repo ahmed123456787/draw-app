@@ -1,56 +1,80 @@
 import React, { useState, useRef } from 'react';
 import images from './../assets/assets';
-import { Link } from 'react-scroll'
-
+import {Link} from 'react-scroll'
 const LandingPage = () => {
 const [choice, setChoice] = useState("home");
 
   return (
-    <div className='min-h-screen bg-landing-page-gradiant flex flex-col justify-start items-center'>
-      {/* Home page */}
-      <div id='home' className='mt-8  lg:w-[80%] lg:h-[75vh] border-4 border-white rounded-3xl bg-whiteBlueColor flex flex-col justify-start items-center p-4'>
-        <div className='flex flex-row justify-between    w-[60%]'>
-
-          {/* Home link */}
-          <Link
-            to="home"
-            smooth={true}
-            duration={2000}
-            className={`cursor-pointer ${choice === "home" ? 'text-black' : 'text-gray-500'}`}
-            onClick={() => setChoice("home")}
-          >
-            Home
-          </Link>
-
-          {/* About Us link */}
-          <Link
-            to="about-us"
-            smooth={true}
-            duration={2000} // Ajustez la durée ici pour un défilement plus lent
-            className={`cursor-pointer ${choice === "about-us" ? 'text-black' : 'text-gray-500'}`}
-            onClick={() => setChoice("about-us")}
-          >
-            About us
-          </Link>
-
-          {/* Contact Us link */}
-          <Link
-            to="contact-us"
-            smooth={true}
-            duration={2000}
-            className={`cursor-pointer ${choice === "contact-us" ? 'text-black' : 'text-gray-500'}`}
-            onClick={() => setChoice("contact-us")}
-          >
-            Contact us
-          </Link>      
-          </div>
-        <p className='lg:p-6 text-gray-900 text-4xl font-bold'>Shape and forms</p>
-        <p className='w-[50%] text-lg text-center leading-relaxed text-gray-600'>Make your child start learning about shapes and colors. Explore the world now.</p>
-        <img 
-          src={images.landing_page} 
-          className="animate-slideDown"
-          alt="Landing Page" 
-        />
+    <div className="min-h-screen bg-landing-page-gradiant flex flex-col justify-start items-center">
+      {/* Navigation */}
+      <div className="flex flex-row justify-between w-[60%] mt-8">
+        <Link
+          to="home"
+          smooth={true}
+          duration={2000}
+          className={`cursor-pointer ${
+            choice === "home" ? "text-black" : "text-gray-500"
+          }`}
+          onClick={() => setChoice("home")}
+        >
+          Home
+        </Link>
+        <Link
+          to="about-us"
+          smooth={true}
+          duration={2000}
+          className={`cursor-pointer ${
+            choice === "about-us" ? "text-black" : "text-gray-500"
+          }`}
+          onClick={() => setChoice("about-us")}
+        >
+          About us
+        </Link>
+        <Link
+          to="contact-us"
+          smooth={true}
+          duration={2000}
+          className={`cursor-pointer ${
+            choice === "contact-us" ? "text-black" : "text-gray-500"
+          }`}
+          onClick={() => setChoice("contact-us")}
+        >
+          Contact us
+        </Link>
+      </div><div className="flex flex-row justify-between w-[60%] mt-8">
+        <Link
+          to="home"
+          smooth={true}
+          duration={2000}
+          className={`cursor-pointer ${
+            choice === "home" ? "text-black" : "text-gray-500"
+          }`}
+          onClick={() => setChoice("home")}
+        >
+          Home
+        </Link>
+        <Link
+          to="about-us"
+          smooth={true}
+          duration={2000}
+          className={`cursor-pointer ${
+            choice === "about-us" ? "text-black" : "text-gray-500"
+          }`}
+          onClick={() => setChoice("about-us")}
+        >
+          About us
+        </Link>
+        <Link
+          to="contact-us"
+          smooth={true}
+          duration={2000}
+          className={`cursor-pointer ${
+            choice === "contact-us" ? "text-black" : "text-gray-500"
+          }`}
+          onClick={() => setChoice("contact-us")}
+        >
+          Contact us
+        </Link>
       </div>
 
       {/* About Us section */}
@@ -98,7 +122,7 @@ const [choice, setChoice] = useState("home");
                 <img src={images.logoparent} alt="" className='w-[20%] h-full' />
                 <p className='text-center text-sm font-bold'>Parent-Friendly Feature</p>
               </div>
-              <p className='text-center text-xs'>
+              <p className='text-center'>
                 Parents can review, lock, and archive their child's drawings, with older archives automatically removed after six months for convenience.
               </p>
             </div>
@@ -116,6 +140,6 @@ const [choice, setChoice] = useState("home");
       </div>
     </div>
   );
-}
+};
 
 export default LandingPage;

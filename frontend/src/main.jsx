@@ -12,7 +12,8 @@ import App from "./App.jsx";
 import "./index.css";
 import SignIn from "./Pages/SignIn.jsx";
 import DrawSpace from "./Pages/DrawSpace.jsx";
-import LandingPage from "./Pages/LandingPage.jsx";
+import LandingPage from './Pages/LandingPage.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,11 @@ const router = createBrowserRouter([
     path: "/draw-space",
     element: <DrawSpace />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path:"/landing-page",
+    element:<LandingPage/>,
+    errorElement:<ErrorPage/>,
   },
 ]);
 
