@@ -203,23 +203,15 @@ class DrawParentView(GenericViewSet,
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def destroy(self, request, *args, **kwargs):
-        child_name = request.data.get("child_name")
-        draw_name = request.data.get("draw_name")
-        
-        if not child_name or not draw_name:
-            return Response({"message": "Both child_name and draw_name must be provided"}, status=status.HTTP_400_BAD_REQUEST)
-        
+    def destroy(self, request, *args, **kwargs):   
+        draw_id = kwargs.get("pk")
         try:
-            child = Child.objects.get(name=child_name,parent=self.request.user)
+            draw = Draw.objects.get(id=draw_id,child__parent=self.request.user)
+            draw.delete()
+            return Response({"message": f"Draw {draw.name} deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            
         except Child.DoesNotExist:
-            return Response({"message": "Child not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "Draw not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        try:
-            draw = Draw.objects.get(name=draw_name, child=child)
-        except Draw.DoesNotExist:
-            return Response({"message": "Draw not found or not associated with the child"}, status=status.HTTP_404_NOT_FOUND)
         
-        draw.delete()
-        return Response({"message": f"Draw '{draw_name}' deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
      

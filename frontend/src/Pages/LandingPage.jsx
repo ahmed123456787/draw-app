@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import images from './../assets/assets';
-import {Link} from 'react-scroll'
+import { Link } from 'react-scroll'
+
 const LandingPage = () => {
-  const [choice, setChoice] = useState("home");
+const [choice, setChoice] = useState("home");
 
   return (
     <div className='min-h-screen bg-landing-page-gradiant flex flex-col justify-start items-center'>
@@ -97,7 +98,7 @@ const LandingPage = () => {
                 <img src={images.logoparent} alt="" className='w-[20%] h-full' />
                 <p className='text-center text-sm font-bold'>Parent-Friendly Feature</p>
               </div>
-              <p className='text-center'>
+              <p className='text-center text-xs'>
                 Parents can review, lock, and archive their child's drawings, with older archives automatically removed after six months for convenience.
               </p>
             </div>

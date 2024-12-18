@@ -12,12 +12,12 @@ import App from "./App.jsx";
 import "./index.css";
 import SignIn from "./Pages/SignIn.jsx";
 import DrawSpace from "./Pages/DrawSpace.jsx";
-
+import LandingPage from "./Pages/LandingPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/ch",
-    element: <HomeChild />,
+    element: <HomeParent />,
     errorElement: <ErrorPage />,
   },
   {
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <HomeParent />,
+    element: <LandingPage />,
   },
   {
     path: "/signIn",

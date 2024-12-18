@@ -84,3 +84,4 @@ class TestPrivateUser(TestCase):
         res = self.client.get(CHILD_URL)
         self.assertEqual(len(json.loads(res.content)),1)
         self.assertEqual(res.status_code,status.HTTP_200_OK)
+        self.assertEqual(res.data[0]['name'],child_1.name)
