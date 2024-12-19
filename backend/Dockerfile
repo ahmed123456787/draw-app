@@ -22,7 +22,7 @@ RUN python -m venv /py && \
     adduser --disabled-password --no-create-home django-user && \
     mkdir -p /usr/src/app/media /usr/src/app/static && \
     chmod -R 755 /usr/src/app && \
-    chmod +x /scripts/run.sh
+    chmod +x /scripts/run.sh 
 
 # Update PATH to use virtual environment and scripts
 ENV PATH="/scripts:/py/bin:$PATH"

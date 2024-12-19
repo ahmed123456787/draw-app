@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+from celery.schedules import crontab
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -159,12 +162,15 @@ SPECTACULAR_SETTINGS = {
 
 # Celery settings
 CELERY_BROKER_URL = "redis://redis:6379/0"
-CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 
 
-#Celery Beat
 # CELERY BEAT SCHEDULER
-
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULE = {
+    "delete_old_draws": {
+        "task": "app.tasks.delete_old_draws",
+        "schedule": crontab(minute="*/1"),
+    },
+}

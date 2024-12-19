@@ -8,8 +8,7 @@ services:
       - ../../app:/usr/src/app  # Syncs local app changes with the container
       - dev-static-app:/vol/web
     command: 
-      sh -c "python manage.py migrate && 
-             python manage.py runserver 0.0.0.0:8000"
+      sh -c " python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     environment: 
       - DB_HOST=db
       - DB_NAME=devdb
@@ -19,8 +18,7 @@ services:
     depends_on:
       - db  
       - redis
-      - celery_worker
-      - celery_beat
+
   db:
     image: postgres:alpine
     volumes:
@@ -41,17 +39,24 @@ services:
     build: 
       context: ./../../.
     container_name: celery_worker
-    command: celery -A app.celery worker --loglevel=info
+    command: celery -A app.celery worker -l info
     volumes:
       - ../../app:/usr/src/app 
+    environment:
+      - DB_HOST=db  # Set the DB_HOST to match the service name in docker-compose
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=changeme
     depends_on:
       - redis
+      - db
+      - app
 
   celery_beat:
     build:
       context: ./../../.
     container_name: celery_beat
-    command: celery -A app beat --loglevel=info
+    command: celery -A app beat -l info
     volumes:
       - ../../app:/usr/src/app  
     environment: 
@@ -63,6 +68,7 @@ services:
     depends_on:
       - redis
       - db
+      - app
  
 
 volumes:
