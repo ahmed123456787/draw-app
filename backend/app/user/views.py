@@ -98,7 +98,6 @@ class ChildCreateDeleteListView(GenericViewSet,
         return Response({"message": f"Child '{child.name}' deleted successfully and session removed."}, status=status.HTTP_204_NO_CONTENT)
 
     def list(self, request, *args, **kwargs):
-        print("Authenticated User:", request.user)  # Check the user making the request
         # Serialize the queryset
         serializer = self.get_serializer(self.get_queryset(), many=True)
         

@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import HomeSection from "./../components/landingPage/HomeSection";
-import AboutUsSection from "./../components/landingPage/AboutUsSection";
-import ContactUsSection from "./../components/landingPage/ContactUsSection";
-import { Link } from "react-scroll";
-
+import React, { useState, useRef } from 'react';
+import images from './../assets/assets';
+import {Link} from 'react-scroll'
 const LandingPage = () => {
-  const [choice, setChoice] = useState("home");
+const [choice, setChoice] = useState("home");
 
   return (
     <>

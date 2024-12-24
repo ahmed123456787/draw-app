@@ -19,3 +19,12 @@ This project is an educational web application designed to help children learn s
 - **Lock Drawings**: Parents have the ability to lock drawings, making them non-editable.
 - **Archive Drawings**: Drawings can be archived for future reference.
 - **Auto-Cleanup**: Archived drawings older than six months are automatically deleted to maintain a clean and organized space.
+
+
+## Some ScreenShots
+
+![The First Page](./assets/front.png)
+
+![The Api Schema (1)](./assets/swag.png)
+![The Api Schema (2)](./assets/swag2.png)
+![The Api Schema (3)](./assets/swag3.png)

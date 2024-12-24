@@ -18,7 +18,7 @@ import LandingPage from './Pages/LandingPage.jsx';
 const router = createBrowserRouter([
   {
     path: "/ch",
-    element: <HomeChild />,
+    element: <HomeParent />,
     errorElement: <ErrorPage />,
   },
   {
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <HomeParent />,
+    element: <LandingPage />,
   },
   {
     path: "/signIn",
