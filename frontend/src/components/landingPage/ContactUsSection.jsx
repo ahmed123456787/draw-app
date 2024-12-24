@@ -22,10 +22,10 @@ const ContactUsSection = () => {
   return (
     <div
       id="contact-us"
-      className="w-[70%] h-[90vh] mb-[5%] border-1 flex space-x-1 justify-between items-start bg-whiteBlueColor mt-40 border-4 border-white rounded-3xl"
+      className=" mb-[5%] border-1 flex space-x-1 justify-between items-start bg-whiteBlueColor mt-20 border-4 border-white rounded-3xl"
     >
       {/* Contact information */}
-      <div className="w-[50%] h-[90%] flex flex-col space-y-3 p-2">
+      <div  className="w-[50%] h-[90%] flex flex-col space-y-3 p-2">
         <p className="font-bold p-4 text-2xl">Contact information</p>
         <div className="flex justify-start items-center p-2">
           <img src={images.locationIcon} alt="Location Icon" className="p-2" />

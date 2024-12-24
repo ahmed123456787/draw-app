@@ -7,7 +7,7 @@ const AboutUsSection = () => {
             {/* About Us section */}
             <div
                 id="about-us"
-                className="w-[70%] h-[195vh] border-1 flex flex-col justify-start items-center bg-whiteBlueColor mt-40 border-4 border-white rounded-3xl"
+                className="w-[70%] h-[225vh] border-1 flex flex-col justify-start items-center bg-whiteBlueColor mt-40 border-4 border-white rounded-3xl"
             >
                 <p className="text-3xl text-black font-bold p-4">Welcome to KidzDraw World</p>
                 <p className="text-gray-400 text-xl font-bold">Where Fun Shapes Bright Minds!</p>

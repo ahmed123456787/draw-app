@@ -3,9 +3,9 @@ import images from "./../../assets/assets";
 
 const HomeSection = () => {
   return (
-    <div
+    <section
       id="home"
-      className="mt-8 lg:w-[80%] lg:h-[75vh] border-4 border-white rounded-3xl bg-whiteBlueColor flex flex-col justify-start items-center p-4"
+      className="lg:w-[80%] mt-[5%] min-h-screen border-4 border-white rounded-3xl bg-whiteBlueColor flex flex-col justify-start items-center p-4"
     >
       <p className="lg:p-6 text-gray-900 text-4xl font-bold">Shape and forms</p>
       <p className="w-[50%] text-lg text-center leading-relaxed text-gray-600">
@@ -17,7 +17,7 @@ const HomeSection = () => {
         className="animate-slideDown"
         alt="Landing Page"
       />
-    </div>
+    </section>
   );
 };
 

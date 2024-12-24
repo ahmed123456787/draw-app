@@ -8,83 +8,58 @@ const LandingPage = () => {
   const [choice, setChoice] = useState("home");
 
   return (
-    <div className="min-h-screen bg-landing-page-gradiant flex flex-col justify-start items-center">
-      {/* Navigation */}
-      <div className="flex flex-row justify-between w-[60%] mt-8">
-        <Link
-          to="home"
-          smooth={true}
-          duration={2000}
-          className={`cursor-pointer ${
-            choice === "home" ? "text-black" : "text-gray-500"
-          }`}
-          onClick={() => setChoice("home")}
-        >
-          Home
-        </Link>
-        <Link
-          to="about-us"
-          smooth={true}
-          duration={2000}
-          className={`cursor-pointer ${
-            choice === "about-us" ? "text-black" : "text-gray-500"
-          }`}
-          onClick={() => setChoice("about-us")}
-        >
-          About us
-        </Link>
-        <Link
-          to="contact-us"
-          smooth={true}
-          duration={2000}
-          className={`cursor-pointer ${
-            choice === "contact-us" ? "text-black" : "text-gray-500"
-          }`}
-          onClick={() => setChoice("contact-us")}
-        >
-          Contact us
-        </Link>
-      </div><div className="flex flex-row justify-between w-[60%] mt-8">
-        <Link
-          to="home"
-          smooth={true}
-          duration={2000}
-          className={`cursor-pointer ${
-            choice === "home" ? "text-black" : "text-gray-500"
-          }`}
-          onClick={() => setChoice("home")}
-        >
-          Home
-        </Link>
-        <Link
-          to="about-us"
-          smooth={true}
-          duration={2000}
-          className={`cursor-pointer ${
-            choice === "about-us" ? "text-black" : "text-gray-500"
-          }`}
-          onClick={() => setChoice("about-us")}
-        >
-          About us
-        </Link>
-        <Link
-          to="contact-us"
-          smooth={true}
-          duration={2000}
-          className={`cursor-pointer ${
-            choice === "contact-us" ? "text-black" : "text-gray-500"
-          }`}
-          onClick={() => setChoice("contact-us")}
-        >
-          Contact us
-        </Link>
+    <>
+      {/* Navbar */}
+      <div className="w-full h-[15%] flex justify-center items-center z-50 fixed bg-white shadow-md ">
+        <div className="flex flex-row justify-between items-center w-[60%] h-full">
+          <Link
+            to="home"
+            smooth={true}
+            offset={-80}
+            duration={2000}
+            className={`cursor-pointer ${
+              choice === "home" ? "text-black" : "text-gray-500"
+            }`}
+            onClick={() => setChoice("home")}
+          >
+            Home
+          </Link>
+          <Link
+            to="about-us"
+            smooth={true}
+            offset={-80}
+            duration={2000}
+            className={`cursor-pointer ${
+              choice === "about-us" ? "text-black" : "text-gray-500"
+            }`}
+            onClick={() => setChoice("about-us")}
+          >
+            About Us
+          </Link>
+          <Link
+            to="contact-us"
+            smooth={true}
+            duration={2000}
+            offset={-80}
+            className={`cursor-pointer ${
+              choice === "contact-us" ? "text-black" : "text-gray-500"
+            }`}
+            onClick={() => setChoice("contact-us")}
+          >
+            Contact Us
+          </Link>
+        </div>
       </div>
 
-      {/* Sections */}
-      <HomeSection />
-      <AboutUsSection />
-      <ContactUsSection />
-    </div>
+      {/* Content */}
+      <div className="pt-[80px] min-h-screen w-[100%] bg-landing-page-gradiant flex  flex-col justify-start items-center">
+        {/* Sections */}
+
+        <HomeSection  />
+        <AboutUsSection />
+        <ContactUsSection id="contact-us"/>
+      </div>
+    </>
   );
 };
 
