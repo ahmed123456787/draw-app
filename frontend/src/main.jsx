@@ -17,13 +17,19 @@ import LandingPage from './Pages/LandingPage.jsx';
 
 const router = createBrowserRouter([
   {
-    path: "/ch",
+    path: "/home-parent",
     element: <HomeParent />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/child",
+    Element: <HomeChild/> ,
     errorElement: <ErrorPage />,
   },
   {
     path: "/archive",
     element: <Archive />,
+    errorElement: <ErrorPage/>,
   },
   {
     path: "/",
@@ -46,11 +52,6 @@ const router = createBrowserRouter([
     path: "/draw-space",
     element: <DrawSpace />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path:"/landing-page",
-    element:<LandingPage/>,
-    errorElement:<ErrorPage/>,
   },
 ]);
 

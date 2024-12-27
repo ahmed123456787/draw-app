@@ -1,14 +1,18 @@
 import React, { useState, useRef } from 'react';
 import images from './../assets/assets';
 import {Link} from 'react-scroll'
+import HomeSection from './../components/landingPage/HomeSection'
+import AboutUsSection from './../components/landingPage/AboutUsSection'
+import ContactUsSection from './../components/landingPage/ContactUsSection'
 const LandingPage = () => {
 const [choice, setChoice] = useState("home");
 
   return (
     <>
+
       {/* Navbar */}
-      <div className="w-full h-[15%] flex justify-center items-center z-50 fixed bg-white shadow-md ">
-        <div className="flex flex-row justify-between items-center w-[60%] h-full">
+      <div className="w-full lg:h-[15%] h-[8%] flex justify-center items-center z-50 fixed bg-white shadow-md ">
+        <div className="flex flex-row justify-between items-center lg:w-[60%] w-[80%] h-full">
           <Link
             to="home"
             smooth={true}
@@ -51,11 +55,11 @@ const [choice, setChoice] = useState("home");
       {/* Content */}
       <div className="pt-[80px] min-h-screen w-[100%] bg-landing-page-gradiant flex  flex-col justify-start items-center">
         {/* Sections */}
-
         <HomeSection  />
         <AboutUsSection />
         <ContactUsSection id="contact-us"/>
       </div>
+      
     </>
   );
 };
