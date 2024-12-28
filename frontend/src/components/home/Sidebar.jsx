@@ -13,12 +13,12 @@ const Sidebar = () => {
     { id: 1, name: "John Doe", avatar: asset.boy_1 },
     { id: 2, name: "Jane Smith", avatar: asset.boy_2 },
     { id: 3, name: "Mike Johnson", avatar: asset.boy_1 },
-    { id: 3, name: "Mike Johnson", avatar: asset.boy_2 },
-    { id: 3, name: "Mike Johnson", avatar: asset.boy_2 },
-    { id: 3, name: "Mike Johnson", avatar: asset.boy_1 },
-    { id: 3, name: "Mike Johnson", avatar: asset.boy_2 },
-    { id: 3, name: "Mike Johnson", avatar: asset.boy_1 },
-    { id: 3, name: "Mike Johnson", avatar: asset.boy_2 },
+    { id: 4, name: "Mike Johnson", avatar: asset.boy_2 },
+    { id: 5, name: "Mike Johnson", avatar: asset.boy_2 },
+    { id: 6, name: "Mike Johnson", avatar: asset.boy_1 },
+    { id: 7, name: "Mike Johnson", avatar: asset.boy_2 },
+    { id: 8, name: "Mike Johnson", avatar: asset.boy_1 },
+    { id: 9, name: "Mike Johnson", avatar: asset.boy_2 },
   ];
 
   return (

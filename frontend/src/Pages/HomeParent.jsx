@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../components/home/Sidebar";
 import ChildrenWorks from "../components/home/ChildrenWorks";
-import data from "../data";
+import data from "../data/index";
 import assets from "../assets/assets";
 
 const HomeParent = () => {

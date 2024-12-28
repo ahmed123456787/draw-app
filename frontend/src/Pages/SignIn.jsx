@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import asset from "../assets/assets";
-
+import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
+  const navigate=useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -50,7 +51,9 @@ const SignIn = () => {
           <button
             type="submit" // Form submit
             className="w-full bg-bgColor text-white text-lg py-2 rounded-2xl transition-colors hover:bg-opacity-90 font-semibold"
-          >
+            onClick={()=>{ navigate('/home-parent')}}
+            >
+            {/* verification of information  */}
             Sign In
           </button>
         </form>
@@ -69,8 +72,8 @@ const SignIn = () => {
           />
           Sign in with Google
         </button>
-        <p className="text-gray-400">
-          Don't have an account? <a className="text-bgColor pl-2">Sign up</a>
+        <p className="text-gray-400 cursor-pointer" >
+          Don't have an account? <a className="text-bgColor pl-2" onClick={()=>{navigate('/sign-up')}}>Sign up</a>
         </p>
       </div>
 
