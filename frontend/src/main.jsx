@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import HomeParent from "./Pages/HomeParent.jsx";
@@ -12,8 +12,7 @@ import App from "./App.jsx";
 import "./index.css";
 import SignIn from "./Pages/SignIn.jsx";
 import DrawSpace from "./Pages/DrawSpace.jsx";
-import LandingPage from './Pages/LandingPage.jsx';
-
+import LandingPage from "./Pages/LandingPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,13 +22,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/home-child",
-    element: <HomeChild/> ,
+
+    element: <HomeChild/>,
     errorElement: <ErrorPage />,
   },
   {
     path: "/archive",
     element: <Archive />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/",
