@@ -4,6 +4,7 @@ import {Link} from 'react-scroll'
 import HomeSection from './../components/landingPage/HomeSection'
 import AboutUsSection from './../components/landingPage/AboutUsSection'
 import ContactUsSection from './../components/landingPage/ContactUsSection'
+import { useNavigate } from 'react-router-dom';
 const LandingPage = () => {
 const [choice, setChoice] = useState("home");
 

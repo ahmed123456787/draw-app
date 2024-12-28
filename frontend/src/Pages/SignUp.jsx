@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import asset from "../assets/assets";
+import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const   SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate=useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +36,7 @@ const SignUp = () => {
       {/* The right container */}
       <div className="flex flex-col pt-14 lg:pt-4 items-center w-full lg:w-2/5 px-4">
         <h2 className="text-2xl lg:text-3xl text-bgColor mb-4 text-center font-semibold">
-          Sign In
+          Sign Up
         </h2>
         <form
           className="flex flex-col p-3 w-full max-w-xs"
@@ -51,7 +53,7 @@ const SignUp = () => {
             className="outline-none bg-slate-300 rounded-lg px-4 py-2 text-gray-900"
           />
           <label className="text-sm lg:text-base text-bgColor mb-1">
-            email
+            Email
           </label>
           <input
             type="email"
@@ -85,12 +87,12 @@ const SignUp = () => {
             type="submit" // Form submit
             className="w-full bg-bgColor text-white text-lg py-2 rounded-2xl transition-colors hover:bg-opacity-90 font-semibold"
           >
-            Sign In
+            Sign Up
           </button>
         </form>
 
         <p className="text-gray-400">
-          already have an account? <a className="text-bgColor pl-2">Sign In</a>
+          already have an account? <a className="text-bgColor pl-2 cursor-pointer" onClick={()=>{navigate('/sign-in')}}>Sign In</a>
         </p>
       </div>
     </div>

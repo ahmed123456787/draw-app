@@ -3,7 +3,7 @@ import Sidebar from "../components/home/Sidebar";
 import ChildrenWorks from "../components/home/ChildrenWorks";
 import assets from "./../assets/assets";
 import FileCard from "../components/home/FileCard";
-import data from "../data"; // Ensure this is an array of file objects
+import children from "../data/index"; // Ensure this is an array of file objects
 import { MdOutlineAdd } from "react-icons/md";
 import CardCreation from "../components/home/CardCreation";
 

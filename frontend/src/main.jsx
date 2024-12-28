@@ -22,8 +22,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/child",
-    Element: <HomeChild/> ,
+    path: "/home-child",
+    element: <HomeChild/> ,
     errorElement: <ErrorPage />,
   },
   {
@@ -36,15 +36,15 @@ const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: "/signIn",
+    path: "/sign-in",
     element: <SignIn />,
   },
   {
-    path: "/signUp",
+    path: "/sign-up",
     element: <SignUp />,
   },
   {
-    path: "signIn-child",
+    path: "sign-in-child",
     element: <SignChild />,
     errorElement: <ErrorPage />,
   },
