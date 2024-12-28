@@ -9,12 +9,31 @@ const ChildrenWorks = ({ data }) => {
   const [valueNameFilter, setValueNameFilter] = useState("");
   const [valueDateFilter, setValueDateFilter] = useState("");
   const [filteredData, setFilteredData] = useState(data); 
+  const [isCheckedName,setisCheckedName]=useState(false);
+  const [isCheckedDate,setisCheckedDate]=useState(false);
   // State to hold filtered data
 
   const handleFilterClick = () => {
     setShowFilterMenu((prev) => !prev);
   };
-
+  const handleCheckboxNameChange=(event)=>{
+    setisCheckedName(event.target.checked);
+    if (!event.target.checked){
+      console.log("is not checked")
+      setFilteredData(data)
+    }else if (event.target.checked){
+      setShowNameDialog(true)
+    }
+  }
+  const handleCheckboxDateChange=(event)=>{
+    setisCheckedDate(event.target.checked);
+    if (!event.target.checked){
+      setFilteredData(data);
+    }
+    else if(event.target.checked){
+      setShowDateDialog(true)
+    }
+  }
   const handleNameFilterClick = () => {
     setShowNameDialog(true);
     setShowFilterMenu(false); // Hide filter menu when showing name dialog
@@ -49,6 +68,7 @@ const ChildrenWorks = ({ data }) => {
 
       setFilteredData(filtered);
     }
+    setisCheckedDate(true);
     setShowDateDialog(false); // Close the dialog
   };
 
@@ -74,7 +94,7 @@ const ChildrenWorks = ({ data }) => {
       // Set the filtered data
       setFilteredData(filtered);
     }
-  
+    setisCheckedName(true)
     setShowNameDialog(false); // Close the dialog
   };
   
@@ -88,17 +108,23 @@ const ChildrenWorks = ({ data }) => {
           {showFilterMenu && (
             <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-2 w-[15%]">
               <p className="bg-gray-300 p-2">Filter by: </p>
+              <div className="flex justify-between">
               <p
                 className="cursor-pointer hover:bg-gray-100 p-2"
                 onClick={handleNameFilterClick}
               >
                 Name
               </p>
+              <input type="checkbox" checked={isCheckedName} onChange={handleCheckboxNameChange}  />
+              </div>
+              <div className="flex justify-between">
               <p 
               className="cursor-pointer hover:bg-gray-100 p-2"
               onClick={handleDateFilterClick}
               >Date
               </p>
+              <input type="checkbox" checked={isCheckedDate} onChange={handleCheckboxDateChange}  />
+              </div>
             </div>
           )}
         </div>

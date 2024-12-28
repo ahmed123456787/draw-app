@@ -87,7 +87,7 @@ const AboutUsSection = () => {
 
                 {/* Call-to-Action */}
                 <div className="flex justify-center items-center w-[80%] lg:w-[50%] mt-6">
-                    <button className="bg-whitePink py-4 px-6 rounded-2xl mb-5 w-[70%] lg:w-[50%] text-base lg:text-xl font-bold text-black" onClick={()=>{navigate('signIn')}}>
+                    <button className="bg-whitePink py-4 px-6 rounded-2xl mb-5 w-[70%] lg:w-[50%] text-base lg:text-xl font-bold text-black" onClick={()=>{navigate('/sign-in')}}>
                         Ready to start!
                     </button>
                 </div>

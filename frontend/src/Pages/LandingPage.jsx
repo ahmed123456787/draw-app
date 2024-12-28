@@ -5,14 +5,16 @@ import HomeSection from './../components/landingPage/HomeSection'
 import AboutUsSection from './../components/landingPage/AboutUsSection'
 import ContactUsSection from './../components/landingPage/ContactUsSection'
 import { useNavigate } from 'react-router-dom';
+
 const LandingPage = () => {
 const [choice, setChoice] = useState("home");
-
+const navigate=useNavigate()
   return (
     <>
 
       {/* Navbar */}
-      <div className="w-full lg:h-[15%] h-[8%] flex justify-center items-center z-50 fixed bg-white shadow-md ">
+      <div className="w-full lg:h-[15%] h-[8%] flex justify-end space-x-20  items-center z-50 fixed bg-white shadow-md ">
+       
         <div className="flex flex-row justify-between items-center lg:w-[60%] w-[80%] h-full">
           <Link
             to="home"
@@ -50,6 +52,10 @@ const [choice, setChoice] = useState("home");
           >
             Contact Us
           </Link>
+        </div>
+        <div className='flex  w-[18%] h-[80%] justify-between items-center'>
+          <button className='rounded-lg border-2 p-2 bg-bgColor text-sm'onClick={()=>{navigate('/sign-in')}}>Login Parent</button>
+          <button className='rounded-lg border-2 p-2 bg-bgColor text-sm'onClick={()=>{navigate('/sign-in-child')}}>Login child</button>
         </div>
       </div>
 
