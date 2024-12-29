@@ -6,7 +6,7 @@ import FileCard from "../components/home/FileCard";
 import children from "../data/index"; // Ensure this is an array of file objects
 import { MdOutlineAdd } from "react-icons/md";
 import CardCreation from "../components/home/CardCreation";
-
+import data from "../data/index";
 const HomeChild = () => {
   const [username, setUsername] = useState("ahmed");
   const [image, setImage] = useState(assets.boy_1);
