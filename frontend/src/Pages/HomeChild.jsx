@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Sidebar from "../components/home/Sidebar";
 import ChildrenWorks from "../components/home/ChildrenWorks";
-import assets from "./../assets/assets";
+import assets from "../assets/assets";
 import FileCard from "../components/home/FileCard";
 import data from "../data/index"; // Ensure this is an array of file objects
 import { MdOutlineAdd } from "react-icons/md";
 import CardCreation from "../components/home/CardCreation";
-import data from "../data/index";
+
 const HomeChild = () => {
   const [username, setUsername] = useState("ahmed");
   const [image, setImage] = useState(assets.boy_1);

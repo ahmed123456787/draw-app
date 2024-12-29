@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import asset from "../assets/assets";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import axios, { Axios } from "axios";
+
 const SignIn = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,6 +13,14 @@ const SignIn = () => {
     console.log("Email:", email);
     console.log("Password:", password);
   };
+
+  useEffect(() => {
+    console.log("Component mounted");
+    const axios = new Axios({}); // Create an Axios instance
+    axios.get("http://127.0.0.1:8000/api/v1/parent/draws/").then((response) => {
+      console.log(response.data);
+    });
+  }, []);
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen min-w-full">
@@ -29,7 +39,7 @@ const SignIn = () => {
           <input
             type="email"
             value={email} // Controlled input
-            onChange={() => setEmail(e.target.value)} // Update email on change
+            onChange={(e) => setEmail(e.target.value)} // Update email on change
             placeholder="Enter your email"
             className="outline-none bg-slate-300 rounded-lg px-4 py-2 mb-4 text-gray-900"
           />
@@ -39,7 +49,7 @@ const SignIn = () => {
           <input
             type="password"
             value={password} // Controlled input
-            onChange={() => setPassword(e.target.value)} // Update password on change
+            onChange={(e) => setPassword(e.target.value)} // Update password on change
             placeholder="Enter your password"
             className="outline-none bg-slate-300 rounded-lg px-4 py-2 text-gray-900"
           />
@@ -51,8 +61,10 @@ const SignIn = () => {
           <button
             type="submit" // Form submit
             className="w-full bg-bgColor text-white text-lg py-2 rounded-2xl transition-colors hover:bg-opacity-90 font-semibold"
-            onClick={()=>{ navigate('/home-parent')}}
-            >
+            onClick={() => {
+              navigate("/home-parent");
+            }}
+          >
             {/* verification of information  */}
             Sign In
           </button>
@@ -72,8 +84,16 @@ const SignIn = () => {
           />
           Sign in with Google
         </button>
-        <p className="text-gray-400 cursor-pointer" >
-          Don't have an account? <a className="text-bgColor pl-2" onClick={()=>{navigate('/sign-up')}}>Sign up</a>
+        <p className="text-gray-400 cursor-pointer">
+          Don't have an account?{" "}
+          <a
+            className="text-bgColor pl-2"
+            onClick={() => {
+              navigate("/sign-up");
+            }}
+          >
+            Sign up
+          </a>
         </p>
       </div>
 

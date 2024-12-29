@@ -1,8 +1,8 @@
 import React from "react";
-import images from "./../../assets/assets";
+import images from "../../assets/assets";
 import { useNavigate } from 'react-router-dom';
 
-const AboutUsSection = () => {
+const About = () => {
     const navigate=useNavigate()
     return (
         <>
@@ -96,4 +96,4 @@ const AboutUsSection = () => {
     );
 };
 
-export default AboutUsSection;
+export default About;

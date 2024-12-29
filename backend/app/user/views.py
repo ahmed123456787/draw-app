@@ -1,7 +1,7 @@
 from .serializers import UserSerializer, ChildSerializer
 from core.models import User, Child
 from django.contrib.sessions.models import Session
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin,ListModelMixin
@@ -22,7 +22,7 @@ class UserCreateView (CreateAPIView):
     
 
 
-class ManagerUserView (RetrieveUpdateAPIView):
+class ManagerUserView (UpdateAPIView):
     serializer_class = UserSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -33,7 +33,7 @@ class ChildCreateDeleteListView(GenericViewSet,
                                 DestroyModelMixin,
                                 ListModelMixin):
     
-    """Create and Delete a child"""
+    """Create, List and Delete a child"""
     serializer_class = ChildSerializer
     queryset = Child.objects.all()
     authentication_classes = [JWTAuthentication]

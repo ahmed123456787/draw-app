@@ -1,7 +1,7 @@
 import React from "react";
-import images from "./../../assets/assets";
+import images from "../../assets/assets";
 
-const HomeSection = () => {
+const Home = () => {
   return (
     <section
       id="home"
@@ -21,4 +21,4 @@ const HomeSection = () => {
   );
 };
 
-export default HomeSection;
+export default Home;

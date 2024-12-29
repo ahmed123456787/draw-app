@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import images from "./../../assets/assets";
+import images from "../../assets/assets";
 
-const ContactUsSection = () => {
+const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -99,4 +99,4 @@ const ContactUsSection = () => {
   );
 };
 
-export default ContactUsSection;
+export default Contact;
