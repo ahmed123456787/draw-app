@@ -3,11 +3,7 @@ import { handleApiError } from "./utils";
 
 export const createChild = async (data) => {
   try {
-    const response = await API.post("user/childs/", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await API.post("user/childs/", data);
     return { error: null, data: response.data };
   } catch (error) {
     return handleApiError(error);
@@ -34,11 +30,7 @@ export const deleteChild = async (id) => {
 
 export const createParent = async (data) => {
   try {
-    const response = await API.post("user/", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await API.post("user/", data);
     return { error: null, data: response.data };
   } catch (error) {
     return handleApiError(error);
@@ -47,11 +39,7 @@ export const createParent = async (data) => {
 
 export const modifyPaeent = async (data) => {
   try {
-    const response = await API.put(`user/`, data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await API.put(`user/`, data);
     return { error: null, data: response.data };
   } catch (error) {
     return handleApiError(error);

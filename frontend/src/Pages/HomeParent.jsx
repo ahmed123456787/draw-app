@@ -3,16 +3,22 @@ import Sidebar from "../components/home/Sidebar";
 import ChildrenWorks from "../components/home/ChildrenWorks";
 import data from "../data/index";
 import assets from "../assets/assets";
+import { useUserChildrenQuery } from "./../services/userApi";
+
+import { useSelector } from "react-redux";
 
 const HomeParent = () => {
-  const [username, setUsername] = useState("ahmed_99");
   const [userProfile, setuserProfile] = useState(assets.boy_1);
+  const username = useSelector((state) => state.auth.user.username);
+
+  const { data: children, error, isLoading } = useUserChildrenQuery();
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="flex w-full min-h-screen">
-      {/* Sidebar - fixed position */}
+      {/* Sidebar  */}
       <div className=" w-14 lg:w-52 h-screen fixed top-0 left-0 bg-bgColor rounded-br-3xl rounded-tr-3xl">
-        <Sidebar />
+        <Sidebar children={children} />
       </div>
 
       {/* Right container - takes remaining width and has padding to accommodate fixed sidebar */}

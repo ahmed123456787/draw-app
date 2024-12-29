@@ -1,4 +1,4 @@
-from .serializers import UserSerializer, ChildSerializer
+from .serializers import UserSerializer, ChildSerializer,CustomTokenObtainPairSerializer
 from core.models import User, Child
 from django.contrib.sessions.models import Session
 from rest_framework.generics import CreateAPIView, UpdateAPIView
@@ -14,13 +14,37 @@ from django.utils.timezone import now
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from django.db import IntegrityError
-
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth import authenticate
 
 class UserCreateView (CreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     
 
+class CustomTokenObtainPairView(TokenObtainPairView):
+    permission_classes = [AllowAny]  # Optional, depends on your use case
+
+    def post(self, request, *args, **kwargs):
+        serializer = CustomTokenObtainPairSerializer(data=request.data)
+        if serializer.is_valid():
+            # Get token data
+            tokens = serializer.validated_data 
+            # Extract the user from the request
+            user = authenticate(username=request.data['email'], password=request.data['password'])
+            return Response({
+                'access': tokens['access'],
+                'refresh': tokens['refresh'],
+                'user': {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                    # Add any other user data you need
+                }
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
 
 class ManagerUserView (UpdateAPIView):
     serializer_class = UserSerializer

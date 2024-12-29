@@ -6,7 +6,7 @@ import { BiLogOut } from "react-icons/bi";
 import CardCreation from "./CardCreation";
 import { Link } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ children }) => {
   const [showCreateChild, setShowCreateChild] = useState(false);
 
   const profiles = [
@@ -49,10 +49,10 @@ const Sidebar = () => {
 
         {/* Scrollable area */}
         <div className="h-44 overflow-y-auto space-y-4 mb-6">
-          {profiles.map((profile) => (
+          {children.map((profile) => (
             <div key={profile.id} className="flex items-center space-x-2">
               <img
-                src={profile.avatar}
+                src={asset.boy_1}
                 alt={profile.name}
                 className="w-8 h-8 rounded-full object-cover"
               />

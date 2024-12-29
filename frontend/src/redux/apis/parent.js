@@ -21,11 +21,7 @@ export const getDrawForParent = async (id) => {
 
 export const updateDrawForParent = async (id, data) => {
   try {
-    const response = await API.patch(`parent/draws/${id}/`, data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await API.patch(`parent/draws/${id}/`, data);
     return { error: null, data: response.data };
   } catch (error) {
     return handleApiError(error);

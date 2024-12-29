@@ -1,18 +1,18 @@
 import { StrictMode } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 import { createRoot } from "react-dom/client";
-import HomeParent from "./Pages/HomeParent.jsx";
+import { store } from "./redux/store.js";
+import HomeParent from "./pages/HomeParent.jsx";
 import Archive from "./Pages/Archive.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
 import HomeChild from "./Pages/HomeChild.jsx";
-import SingIn from "./Pages/SignIn.jsx";
 import SignUp from "./Pages/SignUp.jsx";
 import SignChild from "./Pages/SignChild.jsx";
-import App from "./App.jsx";
-import "./index.css";
-import SignIn from "./Pages/SignIn.jsx";
+import SignIn from "./pages/SignIn.jsx";
 import DrawSpace from "./Pages/DrawSpace.jsx";
 import LandingPage from "./Pages/LandingPage.jsx";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/home-child",
-    element: <HomeChild/>,
+    element: <HomeChild />,
     errorElement: <ErrorPage />,
   },
   {
@@ -56,11 +56,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider
-      router={router}
-      future={{
-        v7_startTransition: true,
-      }}
-    ></RouterProvider>
+    <Provider store={store}>
+      <RouterProvider router={router}></RouterProvider>
+    </Provider>
   </StrictMode>
 );

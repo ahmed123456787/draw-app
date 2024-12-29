@@ -3,15 +3,16 @@ import FileCard from "./FileCard";
 import { BsFilterRight } from "react-icons/bs";
 
 const ChildrenWorks = ({ data }) => {
+  // State to hold filtered data
+
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [showNameDialog, setShowNameDialog] = useState(false);
-  const [showDateDialog,setShowDateDialog]=useState(false);
+  const [showDateDialog, setShowDateDialog] = useState(false);
   const [valueNameFilter, setValueNameFilter] = useState("");
   const [valueDateFilter, setValueDateFilter] = useState("");
   const [filteredData, setFilteredData] = useState(data); 
   const [isCheckedName,setisCheckedName]=useState(false);
   const [isCheckedDate,setisCheckedDate]=useState(false);
-  // State to hold filtered data
 
   const handleFilterClick = () => {
     setShowFilterMenu((prev) => !prev);

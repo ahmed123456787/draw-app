@@ -1,45 +1,64 @@
 import React, { useEffect, useState } from "react";
 import asset from "../assets/assets";
 import { useNavigate } from "react-router-dom";
-import axios, { Axios } from "axios";
+import { useLoginUserMutation } from "../services/userApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setuserData } from "../redux/slicers/userSlice";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
+  const [loginUser] = useLoginUserMutation();
 
   useEffect(() => {
-    console.log("Component mounted");
-    const axios = new Axios({}); // Create an Axios instance
-    axios.get("http://127.0.0.1:8000/api/v1/parent/draws/").then((response) => {
-      console.log(response.data);
-    });
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      navigate("/home-parent");
+    }
   }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage(""); // Clear any previous error messages
+
+    try {
+      const data = await loginUser({ email, password }).unwrap(); // Unwrap the response
+      console.log("Login Response:", data);
+      dispatch(setuserData(data)); // Dispatch the action
+
+      localStorage.setItem("user", JSON.stringify(data));
+      navigate("/home-parent");
+    } catch (error) {
+      console.error("Login Error:", error);
+      // Extract and display error message from the API response
+      setErrorMessage(
+        error?.data?.detail || "An error occurred. Please try again."
+      );
+    }
+  };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen min-w-full">
-      {/* The left container */}
+      {/* Left container */}
       <div className="flex flex-col pt-14 lg:pt-4 items-center w-full lg:w-2/5 px-4">
         <h2 className="text-2xl lg:text-3xl text-bgColor mb-4 text-center font-semibold">
           Sign In
         </h2>
         <form
           className="flex flex-col p-3 w-full max-w-xs"
-          onSubmit={handleSubmit} // Add the form submit handler
+          onSubmit={handleSubmit}
         >
           <label className="text-sm lg:text-base text-bgColor mb-1">
             Email
           </label>
           <input
             type="email"
-            value={email} // Controlled input
-            onChange={(e) => setEmail(e.target.value)} // Update email on change
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             className="outline-none bg-slate-300 rounded-lg px-4 py-2 mb-4 text-gray-900"
           />
@@ -48,34 +67,31 @@ const SignIn = () => {
           </label>
           <input
             type="password"
-            value={password} // Controlled input
-            onChange={(e) => setPassword(e.target.value)} // Update password on change
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             className="outline-none bg-slate-300 rounded-lg px-4 py-2 text-gray-900"
           />
+          {errorMessage && (
+            <p className="text-red-500 text-sm mt-2">{errorMessage}</p> // Display error
+          )}
           <div className="flex justify-end mb-3">
             <a href="#" className="text-sm text-bgColor">
               Forget Password?
             </a>
           </div>
           <button
-            type="submit" // Form submit
+            type="submit"
             className="w-full bg-bgColor text-white text-lg py-2 rounded-2xl transition-colors hover:bg-opacity-90 font-semibold"
-            onClick={() => {
-              navigate("/home-parent");
-            }}
           >
-            {/* verification of information  */}
             Sign In
           </button>
         </form>
-        {/* Divider */}
         <div className="flex items-center w-full max-w-xs mb-2 px-4">
           <hr className="flex-grow border-t border-gray-400" />
           <span className="px-2 text-sm text-gray-500">OR</span>
           <hr className="flex-grow border-t border-gray-400" />
         </div>
-        {/* Google Sign-In Button */}
         <button className="flex items-center justify-center border border-bgColor text-bgColor py-2 px-4 rounded-2xl transition-colors hover:bg-bgColor hover:text-white mb-4 max-w-xs w-full">
           <img
             src="https://image.similarpng.com/very-thumbnail/2021/09/Logo-Search-Google--on-transparent-background-PNG.png"
@@ -97,7 +113,7 @@ const SignIn = () => {
         </p>
       </div>
 
-      {/* The right container with image */}
+      {/* Right container */}
       <div className="hidden lg:flex flex-col items-center bg-bgColor w-full lg:w-3/5 rounded-tl-3xl rounded-bl-3xl">
         <h2 className="text-xl lg:text-2xl text-white text-center mt-3 mb-4">
           Welcome Back to Draw

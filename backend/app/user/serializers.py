@@ -5,6 +5,7 @@ from django.contrib.auth import (
 from rest_framework import serializers
 from django.utils.translation import gettext as _
 from core.models import Child
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,6 +28,11 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
         return user   
     
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        return data 
     
 class ChildSerializer(serializers.ModelSerializer):
     class Meta:
