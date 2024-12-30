@@ -22,7 +22,20 @@ export const drawApi = createApi({
 
       transformResponse: (response) => response || [],
     }),
+    updateDraw: builder.mutation({
+      query: ({ id, ...patch }) => ({
+        url: `parent/draws/${id}/`,
+        method: "PATCH",
+        body: patch,
+      }),
+    }),
+    deleteDraw: builder.mutation({
+      query: (id) => ({
+        url: `parent/draws/${id}/`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetDrawsQuery } = drawApi;
+export const { useGetDrawsQuery, useUpdateDrawMutation, useDeleteDrawMutation } = drawApi;

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FiHome } from "react-icons/fi";
 import { BsFilterRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 const selectDraws = (state) => state.drawapi.queries["getDraws(undefined)"]?.data;
 
 const ArchivePage = () => {
-  const draws = useSelector(selectDraws);
-  console.log(draws);
+  const draws = useSelector(selectDraws).filter((draw) => draw.is_archived);
+
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [showNameDialog, setShowNameDialog] = useState(false);
   const [showDateDialog, setShowDateDialog] = useState(false);
@@ -124,7 +125,7 @@ const ArchivePage = () => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
           <button className="text-blue-500 p-2 rounded-full hover:bg-blue-100">
-            <Link to={"/"}>
+            <Link to={"/home-parent"}>
               <FiHome className="text-bgColor w-6 h-6" />
             </Link>
           </button>

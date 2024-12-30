@@ -6,15 +6,18 @@ import { BiLogOut } from "react-icons/bi";
 import CardCreation from "./CardCreation";
 import { Link } from "react-router-dom";
 import { useCreateChildrenMutation } from "./../../services/userApi";
+import { useUserChildrenQuery } from "./../../services/userApi";
 
 const Sidebar = ({ children }) => {
   const [showCreateChild, setShowCreateChild] = useState(false);
   const [createChildrenMutation] = useCreateChildrenMutation();
+  const { refetch } = useUserChildrenQuery();
 
   // Handle form submission and async request
   const handleCreateChild = async (childData) => {
     try {
       await createChildrenMutation(childData); // Assuming childData contains the name
+      refetch(); // Refetch children list
       setShowCreateChild(false); // Close modal on success
     } catch (error) {
       console.error("Error creating child:", error);
@@ -31,7 +34,7 @@ const Sidebar = ({ children }) => {
         />
       )}
 
-      <div className={`flex flex-col mt-16 pl-3 ${showCreateChild ? "opacity-30" : ""}`}>
+      <div className={`flex flex-col mt-8 pl-3 ${showCreateChild ? "opacity-30" : ""}`}>
         {/* My children */}
         <Link to="/" className="flex items-center space-x-2 mb-6">
           <img src={asset.child_logo} alt="Logo" className="w-6 h-6 lg:w-4 lg:h-4" />
