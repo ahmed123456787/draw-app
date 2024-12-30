@@ -7,11 +7,11 @@ from core.models import Child
 from user.token_hashing import generate_token_from_name
 import json
 
-CHILD_URL = reverse("child:child-list")
+CHILD_URL = reverse("child:children-list") 
 
 def detail_url(child_id):
     """Return a single recipe detail URL"""
-    return reverse("child:child-detail", args=[child_id])
+    return reverse("child:children-detail", args=[child_id])
 
 def create_user(**params):
     """create a user"""
