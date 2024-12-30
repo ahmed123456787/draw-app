@@ -1,49 +1,51 @@
 import { React, useState } from "react";
 import FileCard from "./FileCard";
 import { BsFilterRight } from "react-icons/bs";
+import { useSelector } from "react-redux";
 
-const ChildrenWorks = ({ data }) => {
+const selectDraws = (state) => state.drawapi.queries["getDraws(undefined)"]?.data;
+
+const ChildrenWorks = () => {
   // State to hold filtered data
-
+  const data = useSelector(selectDraws);
+  console.log(data);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [showNameDialog, setShowNameDialog] = useState(false);
   const [showDateDialog, setShowDateDialog] = useState(false);
   const [valueNameFilter, setValueNameFilter] = useState("");
   const [valueDateFilter, setValueDateFilter] = useState("");
-  const [filteredData, setFilteredData] = useState(data); 
-  const [isCheckedName,setisCheckedName]=useState(false);
-  const [isCheckedDate,setisCheckedDate]=useState(false);
+  const [filteredData, setFilteredData] = useState(data);
+  const [isCheckedName, setisCheckedName] = useState(false);
+  const [isCheckedDate, setisCheckedDate] = useState(false);
 
   const handleFilterClick = () => {
     setShowFilterMenu((prev) => !prev);
   };
-  const handleCheckboxNameChange=(event)=>{
+  const handleCheckboxNameChange = (event) => {
     setisCheckedName(event.target.checked);
-    if (!event.target.checked){
-      console.log("is not checked")
-      setFilteredData(data)
-    }else if (event.target.checked){
-      setShowNameDialog(true)
-    }
-  }
-  const handleCheckboxDateChange=(event)=>{
-    setisCheckedDate(event.target.checked);
-    if (!event.target.checked){
+    if (!event.target.checked) {
+      console.log("is not checked");
       setFilteredData(data);
+    } else if (event.target.checked) {
+      setShowNameDialog(true);
     }
-    else if(event.target.checked){
-      setShowDateDialog(true)
+  };
+  const handleCheckboxDateChange = (event) => {
+    setisCheckedDate(event.target.checked);
+    if (!event.target.checked) {
+      setFilteredData(data);
+    } else if (event.target.checked) {
+      setShowDateDialog(true);
     }
-  }
+  };
   const handleNameFilterClick = () => {
     setShowNameDialog(true);
     setShowFilterMenu(false); // Hide filter menu when showing name dialog
   };
-  const handleDateFilterClick=() =>{
-
+  const handleDateFilterClick = () => {
     setShowDateDialog(true);
-    setShowFilterMenu(false)
-  }
+    setShowFilterMenu(false);
+  };
   const applyDateFilter = () => {
     if (valueDateFilter.trim() === "") {
       setFilteredData(data); // Reset to full data if filter is empty
@@ -79,26 +81,25 @@ const ChildrenWorks = ({ data }) => {
     } else {
       const filtered = data.filter((child) => {
         // Normalize the child's name and create a regex
-        const normalizedChildName = child.childName.toLowerCase();
-  
+        const normalizedChildName = child.name.toLowerCase();
+
         // Print each child's name in the console
-        console.log("Child Name:", child.childName);
-  
+        console.log("Child Name:", child.name);
+
         // Assuming you want to match based on the valueNameFilter (using regex)
-        const regex = new RegExp(valueNameFilter.toLowerCase(), 'i'); // Case-insensitive match
+        const regex = new RegExp(valueNameFilter.toLowerCase(), "i"); // Case-insensitive match
         return regex.test(normalizedChildName); // Return true if the regex matches
       });
-  
+
       // Log the filtered results
       console.log("Filtered Results:", filtered);
-      
+
       // Set the filtered data
       setFilteredData(filtered);
     }
-    setisCheckedName(true)
+    setisCheckedName(true);
     setShowNameDialog(false); // Close the dialog
   };
-  
 
   return (
     <div className="flex flex-col mx-4 lg:mx-10">
@@ -110,21 +111,16 @@ const ChildrenWorks = ({ data }) => {
             <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-2 w-[15%]">
               <p className="bg-gray-300 p-2">Filter by: </p>
               <div className="flex justify-between">
-              <p
-                className="cursor-pointer hover:bg-gray-100 p-2"
-                onClick={handleNameFilterClick}
-              >
-                Name
-              </p>
-              <input type="checkbox" checked={isCheckedName} onChange={handleCheckboxNameChange}  />
+                <p className="cursor-pointer hover:bg-gray-100 p-2" onClick={handleNameFilterClick}>
+                  Name
+                </p>
+                <input type="checkbox" checked={isCheckedName} onChange={handleCheckboxNameChange} />
               </div>
               <div className="flex justify-between">
-              <p 
-              className="cursor-pointer hover:bg-gray-100 p-2"
-              onClick={handleDateFilterClick}
-              >Date
-              </p>
-              <input type="checkbox" checked={isCheckedDate} onChange={handleCheckboxDateChange}  />
+                <p className="cursor-pointer hover:bg-gray-100 p-2" onClick={handleDateFilterClick}>
+                  Date
+                </p>
+                <input type="checkbox" checked={isCheckedDate} onChange={handleCheckboxDateChange} />
               </div>
             </div>
           )}
@@ -144,23 +140,17 @@ const ChildrenWorks = ({ data }) => {
               placeholder="Enter name"
             />
             <div className="flex justify-end space-x-2">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded"
-                onClick={() => setShowNameDialog(false)}
-              >
+              <button className="px-4 py-2 bg-gray-300 rounded" onClick={() => setShowNameDialog(false)}>
                 Cancel
               </button>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={applyNameFilter}
-              >
+              <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={applyNameFilter}>
                 Apply
               </button>
             </div>
           </div>
         </div>
       )}
-       {showDateDialog && (
+      {showDateDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-4 rounded-lg lg:w-[30%] w-[90%] shadow-lg">
             <p className="text-lg font-medium mb-4">Enter a Date to Filter</p>
@@ -172,16 +162,10 @@ const ChildrenWorks = ({ data }) => {
               placeholder="YYYY-MM-DD"
             />
             <div className="flex justify-end space-x-2">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded"
-                onClick={() => setShowDateDialog(false)}
-              >
+              <button className="px-4 py-2 bg-gray-300 rounded" onClick={() => setShowDateDialog(false)}>
                 Cancel
               </button>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={applyDateFilter}
-              >
+              <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={applyDateFilter}>
                 Apply
               </button>
             </div>
@@ -189,12 +173,10 @@ const ChildrenWorks = ({ data }) => {
         </div>
       )}
 
-
       {/* Responsive grid layout */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4">
+        {console.log("filter", filteredData)}
         {filteredData.map((child) => (
-
-
           <FileCard key={child.id} child={child} />
         ))}
       </div>

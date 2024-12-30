@@ -68,7 +68,8 @@ class ChildCreateDeleteListView(GenericViewSet,
     
     def create(self, request, *args, **kwargs):
 
-        child_name = request.data["name"] # we check for the child name
+        print(request.data)
+        child_name = request.data.get("name",None) # we check for the child name
         
         if child_name is None :
             return Response({"message":"The child name must be provided"},status=status.HTTP_400_BAD_REQUEST)

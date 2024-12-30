@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { useNavigate } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -34,9 +33,15 @@ export const userApi = createApi({
     }),
     userChildren: builder.query({
       query: () => "user/children/",
-      // Handling errors in the userChildren query here.
-      // You can return a default state if needed, for example:
+
       transformResponse: (response) => response || [],
+    }),
+    createChildren: builder.mutation({
+      query: (data) => ({
+        url: "user/children/",
+        method: "POST",
+        body: data,
+      }),
     }),
   }),
 });
@@ -45,4 +50,5 @@ export const {
   useLoginUserMutation,
   useLoginChildMutation,
   useUserChildrenQuery,
+  useCreateChildrenMutation,
 } = userApi;
