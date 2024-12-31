@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import asset from "../assets/assets";
 import { useNavigate } from "react-router-dom";
-import { useLoginUserMutation } from "../services/userApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useLoginUserMutation } from "../services/parentApi";
+import { useDispatch } from "react-redux";
 import { setuserData } from "../redux/slicers/userSlice";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loginUser] = useLoginUserMutation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
-
-  const [loginUser] = useLoginUserMutation();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -35,9 +34,7 @@ const SignIn = () => {
     } catch (error) {
       console.error("Login Error:", error);
       // Extract and display error message from the API response
-      setErrorMessage(
-        error?.data?.detail || "An error occurred. Please try again."
-      );
+      setErrorMessage(error?.data?.detail || "An error occurred. Please try again.");
     }
   };
 
@@ -45,16 +42,9 @@ const SignIn = () => {
     <div className="flex flex-col lg:flex-row min-h-screen min-w-full">
       {/* Left container */}
       <div className="flex flex-col pt-14 lg:pt-4 items-center w-full lg:w-2/5 px-4">
-        <h2 className="text-2xl lg:text-3xl text-bgColor mb-4 text-center font-semibold">
-          Sign In
-        </h2>
-        <form
-          className="flex flex-col p-3 w-full max-w-xs"
-          onSubmit={handleSubmit}
-        >
-          <label className="text-sm lg:text-base text-bgColor mb-1">
-            Email
-          </label>
+        <h2 className="text-2xl lg:text-3xl text-bgColor mb-4 text-center font-semibold">Sign In</h2>
+        <form className="flex flex-col p-3 w-full max-w-xs" onSubmit={handleSubmit}>
+          <label className="text-sm lg:text-base text-bgColor mb-1">Email</label>
           <input
             type="email"
             value={email}
@@ -62,9 +52,7 @@ const SignIn = () => {
             placeholder="Enter your email"
             className="outline-none bg-slate-300 rounded-lg px-4 py-2 mb-4 text-gray-900"
           />
-          <label className="text-sm lg:text-base text-bgColor mb-1">
-            Password
-          </label>
+          <label className="text-sm lg:text-base text-bgColor mb-1">Password</label>
           <input
             type="password"
             value={password}
@@ -115,18 +103,15 @@ const SignIn = () => {
 
       {/* Right container */}
       <div className="hidden lg:flex flex-col items-center bg-bgColor w-full lg:w-3/5 rounded-tl-3xl rounded-bl-3xl">
-        <h2 className="text-xl lg:text-2xl text-white text-center mt-3 mb-4">
-          Welcome Back to Draw
-        </h2>
+        <h2 className="text-xl lg:text-2xl text-white text-center mt-3 mb-4">Welcome Back to Draw</h2>
         <img
           src={asset.singIn_background}
           className="lg:block w-full lg:w-2/3 h-1/2 text-center p-4"
           alt="Background illustration"
         />
         <p className="text-white text-center px-4">
-          Log in to continue nurturing your child’s creativity through fun and
-          interactive sessions, where they can explore the magic of shapes,
-          colors, and endless possibilities for playful learning.
+          Log in to continue nurturing your child’s creativity through fun and interactive sessions, where
+          they can explore the magic of shapes, colors, and endless possibilities for playful learning.
         </p>
       </div>
     </div>

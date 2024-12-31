@@ -3,14 +3,14 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createRoot } from "react-dom/client";
 import { store } from "./redux/store.js";
-import HomeParent from "./Pages/HomeParent.jsx";
-import Archive from "./Pages/Archive.jsx";
-import ErrorPage from "./Pages/ErrorPage.jsx";
+import HomeParent from "./pages/HomeParent.jsx";
+import Archive from "./pages/Archive.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 import HomeChild from "./Pages/HomeChild.jsx";
 import SignUp from "./Pages/SignUp.jsx";
 import SignChild from "./Pages/SignChild.jsx";
 import SignIn from "./Pages/SignIn.jsx";
-import DrawSpace from "./Pages/DrawSpace.jsx";
+import DrawSpace from "./pages/DrawSpace.jsx";
 import LandingPage from "./Pages/LandingPage.jsx";
 import "./index.css";
 

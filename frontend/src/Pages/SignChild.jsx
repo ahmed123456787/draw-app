@@ -1,13 +1,26 @@
 import React, { useState } from "react";
 import asset from "./../assets/assets";
+import { useLoginChildMutation } from "../services/childApi";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const SignChild = () => {
+  const navigate = useNavigate();
+  const [loginChild] = useLoginChildMutation();
   const [code, setCode] = useState("");
 
-  function printcode() {
-    console.log(code);
-    setCode(""); // Clear the input field
-  }
+  const handleLogin = async () => {
+    try {
+      const data = await loginChild({ token: code }).unwrap();
+      setCode(""); // for clearning the input field
+      console.log("Login Response:", data);
+      Cookies.set("sessionid", JSON.stringify(data.session_key), { expires: 1 }); // Expires in 1 day
+      console.log("Login Response:", data);
+      navigate("/home-child");
+    } catch (error) {
+      console.error("Login Error:", error);
+    }
+  };
 
   return (
     <div className="bg-bgColor min-w-full h-screen">
@@ -29,9 +42,7 @@ const SignChild = () => {
 
           {/* Card Container */}
           <div className="w-3/4 sm:w-72 lg:w-96 h-auto bg-white rounded-2xl shadow-lg mt-4 lg:mt-0 mx-4 lg:mx-0 p-6 flex flex-col items-center">
-            <h2 className="text-2xl text-bgColor mb-6 font-semibold">
-              Enter the code
-            </h2>
+            <h2 className="text-2xl text-bgColor mb-6 font-semibold">Enter the code</h2>
             <input
               placeholder="Enter the code"
               value={code} // Bind the input to the state
@@ -40,7 +51,7 @@ const SignChild = () => {
             />
             <button
               type="button"
-              onClick={printcode}
+              onClick={handleLogin}
               className="w-full text-xl text-white bg-bgColor rounded-xl py-2 mt-4 transition-colors hover:bg-opacity-80"
             >
               Continue

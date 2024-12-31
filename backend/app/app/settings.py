@@ -62,13 +62,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Store sessions in the database
+SESSION_COOKIE_NAME = 'sessionid'  # Default session cookie name
 
-CORS_ORIGIN_WHITELIST = [
-     'http://localhost:5173',  # The default port for create-react-app
+
+CORS_ALLOWED_ORIGINS  = [
+     'http://localhost:5173',# The default port for create-react-app
 ]
 
-ROOT_URLCONF = 'app.urls'
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SAMESITE ='None'
+CSRF_COOKIE_SAMESITE = 'None' 
+SESSION_COOKIE_SECURE = False
 
+
+ROOT_URLCONF = 'app.urls'
+  
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -143,15 +152,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+  
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-         'rest_framework.authentication.SessionAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #      'rest_framework_simplejwt.authentication.JWTAuthentication',
+    #       'rest_framework.authentication.SessionAuthentication',
+    # ),
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #      'rest_framework.permissions.IsAuthenticated',
+    # ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 

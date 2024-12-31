@@ -151,7 +151,7 @@ def child_login_view(request):
         # Check for an existing session by session_key
         session_key = request.session.session_key  # Get the current session key
             # Check if the current session still exists
-        try:
+        try: 
             session = Session.objects.get(session_key=session_key)
             # If the session is valid, return success
             return JsonResponse({

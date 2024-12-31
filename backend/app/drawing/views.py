@@ -6,14 +6,28 @@ from .serializers import DrawChildSerializer, DrawParentSerializer
 from core.models import Draw, Child
 from rest_framework.response import Response
 import rest_framework.status as status
+from rest_framework import permissions      
+
+class IsAuthenticatedChild(permissions.BasePermission): 
+    def has_permission(self, request, view):
+        session_dict = dict(request.session)
+
+    # Print the session data to the console (or log it)
+        print(session_dict,"dict")
+        child_token = request.session.get('child_token')
+        return bool(child_token and Child.objects.filter(token=child_token).exists())
+
+    def has_object_permission(self, request, view, obj):
+        return obj.child.token == request.session.get('child_token')
 
 
-
+ 
 class DrawChildViewSet(ModelViewSet):
     """CRUD operations for Draw for the child"""
     serializer_class = DrawChildSerializer
     queryset = Draw.objects.all()
-
+    permission_classes = [IsAuthenticatedChild]
+    
     def get_queryset(self):
         """Filter the queryset based on the authenticated child"""
         child_token = self.request.session.get('child_token')
@@ -30,7 +44,7 @@ class DrawChildViewSet(ModelViewSet):
         """retreive draws for the authenticated child"""
         
         if not self._is_authenticated():
-            return Response({"message": "Not authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"detail": "Not authorized"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
         serializer = self.get_serializer(Draw.objects.all(),many=True)
@@ -40,7 +54,7 @@ class DrawChildViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         """Retrieve a specific draw for the authenticated child"""
         if not self._is_authenticated():
-            return Response({"message": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
 
         try:
             draw = self.get_queryset().get(pk=kwargs['pk'])
@@ -53,7 +67,7 @@ class DrawChildViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         """Create a draw for the authenticated child"""
         if not self._is_authenticated():
-            return Response({"message": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
 
         draw_name = request.data["name"]
         draw_content = request.data["draw_content"]
@@ -91,7 +105,7 @@ class DrawChildViewSet(ModelViewSet):
         """retreive draws for the authenticated child"""
         
         if not self._is_authenticated():
-            return Response({"message": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
 
         draw = self.get_object()
         draw.delete()
@@ -101,7 +115,7 @@ class DrawChildViewSet(ModelViewSet):
     def update(self, request, *args, **kwargs):
         """Update a specific draw for the authenticated child"""
         if not self._authenticate():
-            return Response({"message": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
 
         try:
             # Retrieve the draw object to update
@@ -135,7 +149,7 @@ class DrawChildViewSet(ModelViewSet):
     def partial_update(self, request, *args, **kwargs):
         """Partially update a specific draw for the authenticated child"""
         if not self._authenticate():
-            return Response({"message": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
 
         try:
             # Retrieve the draw object to partially update
@@ -163,6 +177,7 @@ class DrawChildViewSet(ModelViewSet):
 
     def _is_authenticated(self):
         """Helper method to check if the session has a valid child token"""
+        print("defi ne")
         child_token = self.request.session.get('child_token')
         if not child_token:
             return False  # No token in session, not authenticated
@@ -172,8 +187,6 @@ class DrawChildViewSet(ModelViewSet):
             return False  # Token is invalid (no corresponding child)
         return True  # Token is valid, authenticated
   
-
-
 
 
 class DrawParentView(GenericViewSet,

@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import Topbar from "../components/drawSpace/Topbar";
-import Sidebar from "../components/drawSpace/Sidebar";
-import Drawingarea from "../components/drawSpace/Drawingarea";
-import Colorbar from "../components/drawSpace/Colorbar";
+import Topbar from "../components/draw/Topbar";
+import Sidebar from "../components/draw/Sidebar";
+import Drawingarea from "../components/draw/Drawingarea";
+import Colorbar from "../components/draw/Colorbar";
 
 function DrawSpace() {
   const [selectedShape, setSelectedShape] = useState("Rectangle"); // Default shape

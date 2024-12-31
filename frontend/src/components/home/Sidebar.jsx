@@ -5,8 +5,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { BiLogOut } from "react-icons/bi";
 import CardCreation from "./CardCreation";
 import { Link } from "react-router-dom";
-import { useCreateChildrenMutation } from "./../../services/userApi";
-import { useUserChildrenQuery } from "./../../services/userApi";
+import { useCreateChildrenMutation, useUserChildrenQuery } from "./../../services/parentApi";
 
 const Sidebar = ({ children }) => {
   const [showCreateChild, setShowCreateChild] = useState(false);

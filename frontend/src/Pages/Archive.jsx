@@ -7,8 +7,7 @@ import { useSelector } from "react-redux";
 const selectDraws = (state) => state.drawapi.queries["getDraws(undefined)"]?.data;
 
 const ArchivePage = () => {
-  const draws = useSelector(selectDraws).filter((draw) => draw.is_archived);
-
+  const draws = (useSelector(selectDraws) || []).filter((draw) => draw.is_archived);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [showNameDialog, setShowNameDialog] = useState(false);
   const [showDateDialog, setShowDateDialog] = useState(false);
@@ -243,7 +242,7 @@ const ArchivePage = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((file, index) => (
+            {filteredData?.map((file, index) => (
               <tr key={index} className="hover:bg-gray-50 transition-colors border-b border-gray-200">
                 <td className="p-4 flex items-center space-x-4">
                   <div className="w-10 h-10 bg-gray-200 rounded"></div>

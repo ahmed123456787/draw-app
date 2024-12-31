@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export const userApi = createApi({
-  reducerPath: "userApi",
+export const parentApi = createApi({
+  reducerPath: "parentApi",
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers) => {
@@ -24,13 +24,7 @@ export const userApi = createApi({
         body: data,
       }),
     }),
-    loginChild: builder.mutation({
-      query: (data) => ({
-        url: "user/child-register/",
-        method: "POST",
-        body: data,
-      }),
-    }),
+
     userChildren: builder.query({
       query: () => "user/children/",
 
@@ -46,9 +40,4 @@ export const userApi = createApi({
   }),
 });
 
-export const {
-  useLoginUserMutation,
-  useLoginChildMutation,
-  useUserChildrenQuery,
-  useCreateChildrenMutation,
-} = userApi;
+export const { useLoginUserMutation, useUserChildrenQuery, useCreateChildrenMutation } = parentApi;

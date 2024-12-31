@@ -8,7 +8,7 @@ def delete_old_draws():
     """
     Deletes Draw objects older than 6 months.
     """
-    six_months_ago = timezone.now() - timedelta(days=60*6)
+    six_months_ago = timezone.now() - timedelta(days=180)
     old_draws = Draw.objects.filter(created_at__lte=six_months_ago)
     count = old_draws.count() 
     old_draws.delete()

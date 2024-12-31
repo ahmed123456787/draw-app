@@ -6,6 +6,7 @@ export const drawApi = createApi({
   reducerPath: "drawapi",
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
+    credentials: "include", // Include cookies in requests
     prepareHeaders: (headers) => {
       const user = JSON.parse(localStorage.getItem("user"));
 
@@ -35,7 +36,15 @@ export const drawApi = createApi({
         method: "DELETE",
       }),
     }),
+    getDrawsByChild: builder.query({
+      query: () => `child/draws/`,
+    }),
   }),
 });
 
-export const { useGetDrawsQuery, useUpdateDrawMutation, useDeleteDrawMutation } = drawApi;
+export const {
+  useGetDrawsQuery,
+  useUpdateDrawMutation,
+  useDeleteDrawMutation,
+  useGetDrawsByChildQuery,
+} = drawApi;

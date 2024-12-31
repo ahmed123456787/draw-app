@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/home/Sidebar";
 import ChildrenWorks from "../components/home/ChildrenWorks";
 import assets from "../assets/assets";
-import { useUserChildrenQuery } from "./../services/userApi";
+import { useUserChildrenQuery } from "./../services/parentApi";
 import { useGetDrawsQuery } from "./../services/drawApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setDraws } from "../redux/slicers/drawSlice";
