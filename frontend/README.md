@@ -21,14 +21,6 @@ A React-based frontend application designed to able the children to learn drawin
 
 ---
 
-  
-
-
-  
-
----
-
-  
 
 ## **Built With**
 
@@ -75,14 +67,14 @@ Ensure the following are installed on your system:
 
 ```bash
 
-git clone https://github.com/yourusername/project-name.git
+git clone https://github.com/ahmed123456787/draw-app.git
 
-cd project-name
+cd frontend
 ```
 2. Install Dependecies: 
 
 ```bash 
-npm run dev
+npm install
 ```
 
 3. Start the server
