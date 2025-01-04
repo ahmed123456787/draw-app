@@ -16,6 +16,7 @@ from rest_framework.permissions import AllowAny
 from django.db import IntegrityError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
 
 class UserCreateView (CreateAPIView):
     serializer_class = UserSerializer
@@ -130,6 +131,11 @@ class ChildCreateDeleteListView(GenericViewSet,
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import ensure_csrf_cookie
+ 
+@ensure_csrf_cookie  # This ensures a CSRF cookie is set
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def child_login_view(request):
@@ -149,25 +155,34 @@ def child_login_view(request):
             return JsonResponse({"error": "Invalid token"}, status=401)
 
         # Check for an existing session by session_key
-        session_key = request.session.session_key  # Get the current session key
-            # Check if the current session still exists
+        session_key = request.session.session_key
+        
         try: 
             session = Session.objects.get(session_key=session_key)
             # If the session is valid, return success
-            return JsonResponse({
-                "message": "Login successfule",
-                "session_key": session.session_key
+            csrf_token = get_token(request)  # Get the CSRF token
+            response = JsonResponse({
+                "message": "Login successful",
+                "session_key": session.session_key,
+                "token": child.token,
+                "csrf_token": csrf_token  # Include CSRF token in response
             })
+            return response
+            
         except Session.DoesNotExist:
             # If session does not exist, create a new session
             request.session['child_token'] = child.token
             request.session.save()
-
-            return JsonResponse({
+            
+            csrf_token = get_token(request)  # Get the CSRF token
+            response = JsonResponse({
                 "message": "New session created",
-                "session_key": request.session.session_key
+                "name": child.name,
+                "id": child.id,
+                "token": child.token,
+                "session_key": request.session.session_key,
+                "csrf_token": csrf_token  # Include CSRF token in response
             })
-        
-        
+            return response
 
     return JsonResponse({"error": "Method not allowed"}, status=405)

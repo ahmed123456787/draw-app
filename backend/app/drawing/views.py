@@ -6,187 +6,132 @@ from .serializers import DrawChildSerializer, DrawParentSerializer
 from core.models import Draw, Child
 from rest_framework.response import Response
 import rest_framework.status as status
-from rest_framework import permissions      
-
-class IsAuthenticatedChild(permissions.BasePermission): 
-    def has_permission(self, request, view):
-        session_dict = dict(request.session)
-
-    # Print the session data to the console (or log it)
-        print(session_dict,"dict")
-        child_token = request.session.get('child_token')
-        return bool(child_token and Child.objects.filter(token=child_token).exists())
-
-    def has_object_permission(self, request, view, obj):
-        return obj.child.token == request.session.get('child_token')
+from rest_framework.exceptions import PermissionDenied, NotFound, ValidationError
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 
 
- 
+
 class DrawChildViewSet(ModelViewSet):
-    """CRUD operations for Draw for the child"""
+    """
+    CRUD operations for Draw objects associated with the authenticated child.
+    """
     serializer_class = DrawChildSerializer
-    queryset = Draw.objects.all()
-    permission_classes = [IsAuthenticatedChild]
-    
+
     def get_queryset(self):
-        """Filter the queryset based on the authenticated child"""
-        child_token = self.request.session.get('child_token')
+        """
+        Filter the queryset based on the authenticated child.
+        """
+        try:
+            child = self._get_authenticated_child()
+            return Draw.objects.filter(child=child, is_locked=False, is_archived=False)
+        except PermissionDenied as e:
+            raise PermissionDenied(str(e))
+
+    def _get_authenticated_child(self):
+        """
+        Helper method to retrieve the authenticated child based on the token.
+        """
+        token = self.request.headers.get('Authorization', '').split('Token ')[-1]
+        if not token:
+            raise PermissionDenied("Authorization token is required.")
 
         try:
-            child = Child.objects.get(token=child_token)
+            return Child.objects.get(token=token)
         except Child.DoesNotExist:
-            return Draw.objects.none()  # If child doesn't exist, return an empty queryset.
+            raise PermissionDenied("Invalid or expired token.")
 
-        return Draw.objects.filter(child=child, is_locked=False, is_archived=False)
-
-    
     def list(self, request, *args, **kwargs):
-        """retreive draws for the authenticated child"""
-        
-        if not self._is_authenticated():
-            return Response({"detail": "Not authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        """
+        Retrieve all draws for the authenticated child.
+        """
+        try:
+            queryset = self.get_queryset()
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return self._handle_exception(e)
 
-
-        serializer = self.get_serializer(Draw.objects.all(),many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    
     def retrieve(self, request, *args, **kwargs):
-        """Retrieve a specific draw for the authenticated child"""
-        if not self._is_authenticated():
-            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
-
+        """
+        Retrieve a specific draw for the authenticated child.
+        """
         try:
-            draw = self.get_queryset().get(pk=kwargs['pk'])
-        except Draw.DoesNotExist:
-            return Response({"message": "Draw not found"}, status=status.HTTP_404_NOT_FOUND)
+            draw = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
+            serializer = self.get_serializer(draw)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return self._handle_exception(e)
 
-        serializer = self.get_serializer(draw)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
     def create(self, request, *args, **kwargs):
-        """Create a draw for the authenticated child"""
-        if not self._is_authenticated():
-            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
-
-        draw_name = request.data["name"]
-        draw_content = request.data["draw_content"]
-
-        if not draw_name:
-            return Response({"message": "The name of draw must be provided"}, status=status.HTTP_400_BAD_REQUEST)
-
-        if not draw_content:
-            return Response({"message": "The content of draw must be provided"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Get the authenticated child based on the session token
-        child_token = self.request.session.get("child_token")
+        """
+        Create a new draw for the authenticated child.
+        """
         try:
-            child = Child.objects.get(token=child_token)
-        except Child.DoesNotExist:
-            return Response({"message": "Child not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        data = {
-            "name": draw_name,
-            "draw_content": draw_content,
-            "child": child.id
-        }
-
-        serializer = self.get_serializer(data=data)
-
-        if serializer.is_valid():
+            child = self._get_authenticated_child()
+            serializer = self.get_serializer(data={**request.data, "child": child.id})
+            serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
-    
-    
-    
-    def destroy(self, request, *args, **kwargs):
-        """retreive draws for the authenticated child"""
-        
-        if not self._is_authenticated():
-            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
-
-        draw = self.get_object()
-        draw.delete()
-        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
-
+        except Exception as e:
+            return self._handle_exception(e)
 
     def update(self, request, *args, **kwargs):
-        """Update a specific draw for the authenticated child"""
-        if not self._authenticate():
-            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
-
+        """
+        Update a draw for the authenticated child.
+        """
         try:
-            # Retrieve the draw object to update
-            draw = self.get_queryset().get(pk=kwargs['pk'])
-        except Draw.DoesNotExist:
-            return Response({"message": "Draw not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        # Verify the child is trying to update their own draw
-        if draw.child.token != self.request.session.get('child_token'):
-            return Response({"message": "Not authorized to update this draw"}, status=status.HTTP_403_FORBIDDEN)
-
-        # Prepare the data to update the draw
-        draw_name = request.data.get("name", draw.name)
-        draw_content = request.data.get("draw_content", draw.draw_content)
-
-        data = {
-            "name": draw_name,
-            "draw_content": draw_content,
-            "child": draw.child.id  # Ensure the child ID is preserved
-        }
-
-        # Validate and update the draw
-        serializer = self.get_serializer(draw, data=data)
-        if serializer.is_valid():
+            draw = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
+            serializer = self.get_serializer(draw, data=request.data)
+            serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        except Exception as e:
+            return self._handle_exception(e)
 
     def partial_update(self, request, *args, **kwargs):
-        """Partially update a specific draw for the authenticated child"""
-        if not self._authenticate():
-            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
-
+        """
+        Partially update a draw for the authenticated child.
+        """
         try:
-            # Retrieve the draw object to partially update
-            draw = self.get_queryset().get(pk=kwargs['pk'])
-        except Draw.DoesNotExist:
-            return Response({"message": "Draw not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        # Verify the child is trying to update their own draw
-        if draw.child.token != self.request.session.get('child_token'):
-            return Response({"message": "Not authorized to update this draw"}, status=status.HTTP_403_FORBIDDEN)
-
-        # Validate the partial data
-        data = request.data
-        if "name" not in data and "draw_content" not in data:
-            return Response({"message": "At least one field must be provided for partial update"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Partially update the draw
-        serializer = self.get_serializer(draw, data=data, partial=True)
-        if serializer.is_valid():
+            draw = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
+            serializer = self.get_serializer(draw, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return self._handle_exception(e)
 
-
-    def _is_authenticated(self):
-        """Helper method to check if the session has a valid child token"""
-        print("defi ne")
-        child_token = self.request.session.get('child_token')
-        if not child_token:
-            return False  # No token in session, not authenticated
+    def destroy(self, request, *args, **kwargs):
+        """
+        Delete a draw for the authenticated child.
+        """
         try:
-            child = Child.objects.get(token=child_token)
-        except Child.DoesNotExist:
-            return False  # Token is invalid (no corresponding child)
-        return True  # Token is valid, authenticated
-  
+            draw = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
+            draw.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return self._handle_exception(e)
+
+    def _handle_exception(self, exception):
+        """
+        Generic exception handler to standardize error responses.
+        """
+        if isinstance(exception, PermissionDenied):
+            return Response({"detail": str(exception)}, status=status.HTTP_403_FORBIDDEN)
+        elif isinstance(exception, NotFound):
+            return Response({"detail": "Resource not found."}, status=status.HTTP_404_NOT_FOUND)
+        elif isinstance(exception, ValidationError):
+            return Response({"detail": exception.detail}, status=status.HTTP_400_BAD_REQUEST)
+        elif isinstance(exception, ObjectDoesNotExist):
+            return Response({"detail": "Related object not found."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # Handle unexpected errors
+            return Response(
+                {"detail": "An unexpected error occurred.", "error": str(exception)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
 
 
 class DrawParentView(GenericViewSet,

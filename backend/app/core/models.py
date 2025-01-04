@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.conf import settings
-from datetime import datetime
 
 
 class UserManager(BaseUserManager):
@@ -66,6 +64,7 @@ class Draw(models.Model):
     name = models.CharField(max_length=30)
     draw_content = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(null=True, blank=True) 
     last_modified = models.DateTimeField(auto_now=True)
     is_locked = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)

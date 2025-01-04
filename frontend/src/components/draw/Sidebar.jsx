@@ -8,7 +8,7 @@ import { CgShapeRhombus } from 'react-icons/cg';
 import { FaCircle } from "react-icons/fa";
 
 function Sidebar({ setSelectedShape }) {
-    const [isActiveShape,setActiveShape]=useState("");
+  const [isActiveShape, setActiveShape] = useState("");
   const shapes = [
     { label: "Line", icon: PiLineVertical, color: "#A10EC0" },
     { label: "Arrow", icon: PiArrowUpRightLight, color: "#2DCC70" },
@@ -21,20 +21,23 @@ function Sidebar({ setSelectedShape }) {
 
   return (
     <div
-      className="sm:w-[10%] md:w-[10%] lg:w-[8%] w-[15%] h-full overflow-y-scroll space-y-10 pt-5"
-      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', }}
+      className="sm:w-[10%] md:w-[10%] lg:w-[8%] w-[15%]  overflow-y-scroll space-y-10 pt-5"
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       {shapes.map((shape) => (
         <div
           key={shape.label}
-          onClick={() => {setSelectedShape(shape.label);setActiveShape(shape.label)}}
-          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            setSelectedShape(shape.label);
+            setActiveShape(shape.label);
+          }}
+          style={{ cursor: "pointer" }}
         >
           <ShapeComponent
             icon={shape.icon}
             label={shape.label}
             color={shape.color}
-            isActiveShape={isActiveShape}            
+            isActiveShape={isActiveShape}
           />
         </div>
       ))}
@@ -42,4 +45,4 @@ function Sidebar({ setSelectedShape }) {
   );
 }
 
-export default Sidebar;
+export default Sidebar; 

@@ -7,25 +7,26 @@ const CardCreation = ({
   avatarImage, // Avatar image prop
   onSubmit, // Callback for "Create" button
 }) => {
-  const [childName, setChildName] = useState("");
-  const [loading, setLoading] = useState(false); // To manage loading state
+  const [name, setName] = useState("");
   const [error, setError] = useState(null); // To manage error state
-
+  const [loading, setLoading] = useState(false); // To manage loading state
   const handleSubmit = async () => {
-    if (childName.trim() === "") {
+    if (name.trim() === "") {
       setError("Name cannot be empty");
       return;
     }
-    setLoading(true);
     setError(null);
 
     try {
+      console.log("Creating draw...");
       // Call the onSubmit function passed as prop (make sure it's async)
-      await onSubmit({ name: childName });
-      setLoading(false);
+      if (title === "New Child") {
+        await onSubmit({ name: name });
+      } else {
+        await onSubmit(name);
+      }
       onClose(); // Close the modal after successful creation
     } catch (err) {
-      setLoading(false);
       setError("Failed to create child. Please try again.");
     }
   };
@@ -49,8 +50,8 @@ const CardCreation = ({
           <input
             placeholder={placeholder}
             className="outline-none rounded-lg text-bgColor py-2 px-3 bg-white placeholder-gray-500"
-            onChange={(e) => setChildName(e.target.value)}
-            value={childName}
+            onChange={(e) => setName(e.target.value)}
+            value={name}
           />
         </div>
 

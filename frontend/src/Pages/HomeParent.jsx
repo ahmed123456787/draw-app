@@ -6,13 +6,15 @@ import { useUserChildrenQuery } from "./../services/parentApi";
 import { useGetDrawsQuery } from "./../services/drawApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setDraws } from "../redux/slicers/drawSlice";
+import Loading from "../components/Loading";
+import ErrorLoading from "../components/ErrorLoading";
 
 const HomeParent = () => {
   const [userProfile, setUserProfile] = useState(assets.boy_1);
   const username = useSelector((state) => state.auth.user.username);
   const dispatch = useDispatch();
 
-  const { data: children, error: userError, isLoading } = useUserChildrenQuery();
+  const { data: children, error: userError, isLoading, refetch } = useUserChildrenQuery();
   const { data: draws, error: drawError, isLoading: drawIsLoading } = useGetDrawsQuery();
 
   // Move useDispatch logic into useEffect
@@ -20,8 +22,8 @@ const HomeParent = () => {
     dispatch(setDraws(draws));
   }, [dispatch, draws]);
 
-  if (isLoading || drawIsLoading) return <p>Loading...</p>;
-  if (userError || drawError) return <p>Failed to load data.</p>;
+  if (isLoading || drawIsLoading) return <Loading />;
+  if (userError || drawError) return <ErrorLoading refetch={refetch} />;
 
   return (
     <div className="flex w-full min-h-screen">

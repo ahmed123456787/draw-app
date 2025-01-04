@@ -3,17 +3,30 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaLock, FaUnlock } from "react-icons/fa";
 import { FiFolder } from "react-icons/fi";
 import { BiSolidFileArchive } from "react-icons/bi";
-import { useUpdateDrawMutation, useGetDrawsQuery, useDeleteDrawMutation } from "../../services/drawApi";
+import {
+  useUpdateDrawMutation,
+  useGetDrawsQuery,
+  useDeleteDrawByParentMutation,
+} from "../../services/drawApi";
+import {
+  useGetDrawsByChildQuery,
+  useDeleteDrawByChildMutation,
+} from "../../services/childApi";
 
-const FileCard = ({ draw, showProfileImage = true }) => {
-  const [deleteDraw, { isLoading: isDeleteLoading }] = useDeleteDrawMutation();
+const FileCard = ({ draw, showProfileImage = true, isChild }) => {
+  const [deleteByParent, { isLoading: isDeleteLoadingParent }] =
+    useDeleteDrawByParentMutation();
+  const [deleteByChild, { isLoading: isDeleteLoadingChild }] = useDeleteDrawByChildMutation();
+
   const { refetch } = useGetDrawsQuery();
+  const { refetch: refetchChild } = useGetDrawsByChildQuery();
   const [updateDraw, { isLoading: isUpdateLoading }] = useUpdateDrawMutation();
   const [localDraw, setLocalDraw] = useState(draw);
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     setLocalDraw(draw);
+    console.log("Draw updated:", localDraw);
   }, [draw]);
 
   const handleUpdate = async (field) => {
@@ -38,8 +51,14 @@ const FileCard = ({ draw, showProfileImage = true }) => {
   const handleDelete = async () => {
     try {
       setIsVisible(false); // Immediately hide the card
-      await deleteDraw(localDraw.id).unwrap();
-      await refetch();
+      console.log(isChild);
+      if (isChild) {
+        await deleteByChild(localDraw.id).unwrap();
+        await refetchChild();
+      } else {
+        await deleteByParent(localDraw.id).unwrap();
+        await refetch();
+      }
     } catch (error) {
       console.error("Failed to delete draw:", error);
       setIsVisible(true); // Show the card again if deletion fails
@@ -52,7 +71,11 @@ const FileCard = ({ draw, showProfileImage = true }) => {
     <div className="p-2 transition-opacity duration-300">
       <div className="h-36 bg-[#D9D9D9] w-full rounded-2xl p-2">
         {showProfileImage && (
-          <img src={localDraw.profileImg} alt={localDraw.childName} className="w-8 h-8 rounded-full" />
+          <img
+            src={localDraw.profileImg}
+            alt={localDraw.childName}
+            className="w-8 h-8 rounded-full"
+          />
         )}
       </div>
       <p className="text-xl text-bgColor px-2">{localDraw.name}</p>
@@ -64,26 +87,31 @@ const FileCard = ({ draw, showProfileImage = true }) => {
             onClick={() => handleUpdate("is_archived")}
             className="disabled:opacity-50"
           >
-            {localDraw.is_archived ? (
-              <BiSolidFileArchive className="text-bgColor cursor-pointer" />
-            ) : (
-              <FiFolder className="text-bgColor cursor-pointer" />
-            )}
+            {!isChild &&
+              (localDraw.is_archived ? (
+                <BiSolidFileArchive className="text-bgColor cursor-pointer" />
+              ) : (
+                <FiFolder className="text-bgColor cursor-pointer" />
+              ))}
           </button>
-
+          {!isChild && (
+            <button
+              disabled={isUpdateLoading}
+              onClick={() => handleUpdate("is_locked")}
+              className="disabled:opacity-50"
+            >
+              {localDraw.is_locked ? (
+                <FaLock className="text-bgColor cursor-pointer" />
+              ) : (
+                <FaUnlock className="text-bgColor cursor-pointer" />
+              )}
+            </button>
+          )}
           <button
-            disabled={isUpdateLoading}
-            onClick={() => handleUpdate("is_locked")}
+            disabled={isDeleteLoadingParent || isDeleteLoadingChild}
+            onClick={handleDelete}
             className="disabled:opacity-50"
           >
-            {localDraw.is_locked ? (
-              <FaLock className="text-bgColor cursor-pointer" />
-            ) : (
-              <FaUnlock className="text-bgColor cursor-pointer" />
-            )}
-          </button>
-
-          <button disabled={isDeleteLoading} onClick={handleDelete} className="disabled:opacity-50">
             <RiDeleteBin5Line className="w-4 h-4 text-red-500 cursor-pointer" />
           </button>
         </div>

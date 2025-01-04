@@ -18,7 +18,7 @@ from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+ 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -52,9 +52,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,20 +62,27 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Store sessions in the database
-SESSION_COOKIE_NAME = 'sessionid'  # Default session cookie name
 
-
-CORS_ALLOWED_ORIGINS  = [
-     'http://localhost:5173',# The default port for create-react-app
+# CORS Settings
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',  # React development server
 ]
+CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be included in requests
 
-CORS_ALLOW_CREDENTIALS = True
-SESSION_COOKIE_SAMESITE ='None'
-CSRF_COOKIE_SAMESITE = 'None' 
-SESSION_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://localhost:8000'# React development server
+]
+CSRF_COOKIE_HTTPONLY = False  # Allow the CSRF token to be accessed via JavaScript
+# settings.py
+
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to access CSRF token
+CSRF_COOKIE_SECURE = False  # Set to True in production for HTTPS
+CSRF_COOKIE_SAMESITE = 'Lax'  # Ensure CSRF cookie can be sent with cross-site requests
 
 
+ 
 ROOT_URLCONF = 'app.urls'
   
 TEMPLATES = [
@@ -152,17 +159,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-  
+   
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #      'rest_framework_simplejwt.authentication.JWTAuthentication',
-    #       'rest_framework.authentication.SessionAuthentication',
-    # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        #  'rest_framework_simplejwt.authentication.JWTAuthentication',
+        #  'rest_framework.authentication.SessionAuthentication',
+    ),
     # 'DEFAULT_PERMISSION_CLASSES': [
     #      'rest_framework.permissions.IsAuthenticated',
     # ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-}
+} 
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=55),

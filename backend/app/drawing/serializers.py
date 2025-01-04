@@ -16,5 +16,5 @@ class DrawChildSerializer(serializers.ModelSerializer):
     child = serializers.PrimaryKeyRelatedField(queryset=Child.objects.all(), write_only=True)
     class Meta: 
         model = Draw
-        fields = ["id","name", "draw_content","child"]   
+        fields = ["id","name", "draw_content","last_modified","child",]   
         read_only_fields= ["id"]

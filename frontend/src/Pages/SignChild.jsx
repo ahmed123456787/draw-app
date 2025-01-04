@@ -11,10 +11,10 @@ const SignChild = () => {
 
   const handleLogin = async () => {
     try {
+      console.log(document.cookie);
       const data = await loginChild({ token: code }).unwrap();
+      localStorage.setItem("child", JSON.stringify(data));
       setCode(""); // for clearning the input field
-      console.log("Login Response:", data);
-      Cookies.set("sessionid", JSON.stringify(data.session_key), { expires: 1 }); // Expires in 1 day
       console.log("Login Response:", data);
       navigate("/home-child");
     } catch (error) {

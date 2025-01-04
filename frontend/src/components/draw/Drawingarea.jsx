@@ -1,15 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Stage, Layer, Rect, Circle, Line, Star, RegularPolygon } from "react-konva";
 import { FaEraser } from "react-icons/fa";
 import { GiPencil } from "react-icons/gi";
 
-function Drawingarea({ selectedShape, ColorShape, setShapes, shapes, stageRef }) {
+function DrawingArea({ selectedShape, ColorShape, setShapes, shapes, stageRef }) {
   // Ajouter une ref pour le Stage
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [borderSize, setborderSize] = useState(2);
   const [isEraserActive, setIsEraserActive] = useState(false);
-
   const handleMouseDown = (e) => {
     const stage = stageRef.current;
     const { x, y } = stage.getPointerPosition();
@@ -34,7 +33,10 @@ function Drawingarea({ selectedShape, ColorShape, setShapes, shapes, stageRef })
   const handleMouseUp = () => {
     if (currentShape) {
       // Ajoutez la nouvelle forme à l'état `shapes`
-      setShapes((prevShapes) => [...prevShapes, { ...currentShape, type: selectedShape, borderSize }]);
+      setShapes((prevShapes) => [
+        ...prevShapes,
+        { ...currentShape, type: selectedShape, borderSize },
+      ]);
     }
     setCurrentShape(null);
     setIsDrawing(false);
@@ -140,9 +142,10 @@ function Drawingarea({ selectedShape, ColorShape, setShapes, shapes, stageRef })
   };
 
   return (
-    <div className="bg-gray-200 w-[75%] sm:w-[80%] md:w-[80%] lg:w-[85%] h-full flex flex-col items-center justify-evenly">
-      <div className="bg-white rounded-xl shadow-xl w-[90%] sm:w-[85%] md:w-[78%] lg:w-[70%] h-[70%] sm:h-[75%] md:h-[80%] lg:h-[85%] flex items-center justify-center">
+    <div className="bg-gray-200 w-[75%] sm:w-[80%] md:w-[80%] lg:w-[85%] flex flex-col items-center justify-evenly">
+      <div className="bg-white rounded-xl shadow-xl w-[90%] sm:w-[80%] lg:w-[70%] h-[70%]  sm:h-[75%] md:h-[80%] lg:h-[85%] flex items-center justify-center">
         <Stage
+          className="border-transparent w-full h-full "
           ref={stageRef}
           width={window.innerWidth * 0.595}
           height={window.innerHeight * 0.765}
@@ -153,13 +156,14 @@ function Drawingarea({ selectedShape, ColorShape, setShapes, shapes, stageRef })
         >
           <Layer>
             {shapes.map((shape, i, borderSize) => renderShape(shape, i, borderSize))}
-            {currentShape && renderShape({ ...currentShape, type: selectedShape, borderSize }, "current")}
+            {currentShape &&
+              renderShape({ ...currentShape, type: selectedShape, borderSize }, "current")}
           </Layer>
         </Stage>
       </div>
 
       {/* Tools Section */}
-      <div className="bg-white sm:w-[40%] md:w-[40%] lg:w-[40%] h-[8%] w-[50%] rounded-2xl flex justify-around items-center">
+      <div className="bg-white lg:w-[40%] h-[5%] mb-5 w-[70%] rounded-2xl flex justify-around items-center">
         {/* Eraser */}
         <FaEraser
           className={`cursor-pointer text-sm sm:text-xl md:text-2xl lg:text-3xl ${
@@ -218,4 +222,4 @@ function Drawingarea({ selectedShape, ColorShape, setShapes, shapes, stageRef })
   );
 }
 
-export default Drawingarea;
+export default DrawingArea;
