@@ -21,10 +21,10 @@ const ChildrenWorks = () => {
   const applyFiltr = () => {
     let result = data;
     if (valueNameFilter !== "") {
-      result = filterData(valueNameFilter, result);
+      result = filterData("name", valueNameFilter, result);
     }
     if (valueDateFilter !== "") {
-      result = filterData(new Date(valueDateFilter), result);
+      result = filterData("date", new Date(valueDateFilter), result);
     }
     setFilteredData(result);
   };
@@ -61,22 +61,29 @@ const ChildrenWorks = () => {
       <div className="flex justify-between mb-4">
         <p className="text-bgColor font-medium">Recent Files</p>
         <div>
-          <BsFilterRight className="w-6 h-6 text-bgColor cursor-pointer" onClick={handleFilterClick} />
+          <BsFilterRight
+            className="w-6 h-6 text-bgColor cursor-pointer"
+            onClick={handleFilterClick}
+          />
 
           {showFilterMenu && (
             <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-2 w-[15%]">
               <p className="bg-gray-300 p-2">Filter by: </p>
               <div className="flex justify-between">
-                <p className="cursor-pointer hover:bg-gray-100 p-2" onClick={handleNameFilterClick}>
+                <p
+                  className="cursor-pointer hover:bg-gray-100 p-2"
+                  onClick={handleNameFilterClick}
+                >
                   Name
                 </p>
-                <input type="checkbox" checked={isCheckedDate} onChange={handleCheckboxChange} />
               </div>
               <div className="flex justify-between">
-                <p className="cursor-pointer hover:bg-gray-100 p-2" onClick={handleDateFilterClick}>
+                <p
+                  className="cursor-pointer hover:bg-gray-100 p-2"
+                  onClick={handleDateFilterClick}
+                >
                   Date
                 </p>
-                <input type="checkbox" checked={isCheckedDate} onChange={handleCheckboxChange} />
               </div>
             </div>
           )}
@@ -96,7 +103,10 @@ const ChildrenWorks = () => {
               placeholder="Enter name"
             />
             <div className="flex justify-end space-x-2">
-              <button className="px-4 py-2 bg-gray-300 rounded" onClick={() => setShowNameDialog(false)}>
+              <button
+                className="px-4 py-2 bg-gray-300 rounded"
+                onClick={() => setShowNameDialog(false)}
+              >
                 Cancel
               </button>
               <button
@@ -126,7 +136,10 @@ const ChildrenWorks = () => {
               placeholder="YYYY-MM-DD"
             />
             <div className="flex justify-end space-x-2">
-              <button className="px-4 py-2 bg-gray-300 rounded" onClick={() => setShowDateDialog(false)}>
+              <button
+                className="px-4 py-2 bg-gray-300 rounded"
+                onClick={() => setShowDateDialog(false)}
+              >
                 Cancel
               </button>
               <button
@@ -145,7 +158,7 @@ const ChildrenWorks = () => {
 
       {/* Responsive grid layout */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4">
-        {filteredData.map((draw) => (
+        {filteredData?.map((draw) => (
           <FileCard key={draw.id} draw={draw} />
         ))}
       </div>

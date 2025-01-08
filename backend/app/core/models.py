@@ -64,7 +64,7 @@ class Draw(models.Model):
     name = models.CharField(max_length=30)
     draw_content = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(null=True, blank=True) 
+    image = models.ImageField(null=True, blank=True,upload_to="draws/") 
     last_modified = models.DateTimeField(auto_now=True)
     is_locked = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)

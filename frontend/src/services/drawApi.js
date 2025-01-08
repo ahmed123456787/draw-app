@@ -15,7 +15,6 @@ export const drawApi = createApi({
         // Add Authorization header if user exists
         if (user?.access) {
           headers.set("Authorization", `Bearer ${user.access}`);
-          headers.set("Auth", `Token ${child.token}`);
 
           console.log("Added Authorization header");
         } else {

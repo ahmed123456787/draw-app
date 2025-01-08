@@ -3,24 +3,31 @@ import Topbar from "../components/draw/Topbar";
 import Sidebar from "../components/draw/Sidebar";
 import Drawingarea from "../components/draw/Drawingarea";
 import Colorbar from "../components/draw/Colorbar";
-
+import { useParams } from "react-router-dom";
+import { useUpdateDrawMutation } from "../services/childApi";
+import { useSelector } from "react-redux";
+import { drawApi } from "../services/drawApi";
 function DrawSpace() {
+  const { id } = useParams();
   const [selectedShape, setSelectedShape] = useState("Rectangle"); // Default shape
   const [ColorShape, setColorShape] = useState("white"); // default color
+  const [updateDraw, { isLoading: isUpdateLoading }] = useUpdateDrawMutation();
 
   const [shapes, setShapes] = useState([]);
   const stageRef = useRef(null);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const image = stageRef.current.toDataURL();
 
-    const stageData = {
-      shapes: shapes, // Données des formes
-      image: image, // Image en base64
+    const content = {
+      id: id,
+      draw_content: {
+        content: shapes,
+      },
+      image: image,
     };
-    const stageJson = JSON.stringify(stageData, null, 2);
-    console.log(stageJson);
-    return stageJson;
+    await updateDraw(content).unwrap();
+    return content;
   };
   return (
     <div className="h-screen">

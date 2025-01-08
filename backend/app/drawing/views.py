@@ -9,7 +9,8 @@ import rest_framework.status as status
 from rest_framework.exceptions import PermissionDenied, NotFound, ValidationError
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.files.base import ContentFile
+import base64
 
 
 class DrawChildViewSet(ModelViewSet):
@@ -81,26 +82,50 @@ class DrawChildViewSet(ModelViewSet):
         Update a draw for the authenticated child.
         """
         try:
+            child = self._get_authenticated_child()
             draw = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
-            serializer = self.get_serializer(draw, data=request.data)
+            serializer = self.get_serializer(draw, data={**request.data,"child":child.id})
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return self._handle_exception(e)
 
+
+
     def partial_update(self, request, *args, **kwargs):
         """
         Partially update a draw for the authenticated child.
         """
         try:
+            # Get the authenticated child and the draw object
+            child = self._get_authenticated_child()
             draw = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
-            serializer = self.get_serializer(draw, data=request.data, partial=True)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            
+            # Merge the request data with the authenticated child's ID
+            serializer = self.get_serializer(draw, data={**request.data, "child": child.id}, partial=True)
+            
+            try :
+                
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK) 
+            except ValidationError as ve:
+                # Catch validation errors and return a detailed response
+                return Response(
+                    {"detail": "Invalid image format or data", "errors": ve.detail},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+         
+
         except Exception as e:
-            return self._handle_exception(e)
+            # Catch all other errors and handle them appropriately
+            return Response(
+                {"detail": "An unexpected error occurred.", "error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
 
     def destroy(self, request, *args, **kwargs):
         """
@@ -154,12 +179,12 @@ class DrawParentView(GenericViewSet,
     def update(self, request, *args, **kwargs):  
         draw_id = kwargs.get("pk")
         draw = Draw.objects.get(id=draw_id)
-        
         serializer = self.get_serializer(draw, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     
     def destroy(self, request, *args, **kwargs):   
         draw_id = kwargs.get("pk")

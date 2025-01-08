@@ -12,17 +12,18 @@ import {
   useGetDrawsByChildQuery,
   useDeleteDrawByChildMutation,
 } from "../../services/childApi";
+import { useNavigate } from "react-router-dom";
 
 const FileCard = ({ draw, showProfileImage = true, isChild }) => {
   const [deleteByParent, { isLoading: isDeleteLoadingParent }] =
     useDeleteDrawByParentMutation();
   const [deleteByChild, { isLoading: isDeleteLoadingChild }] = useDeleteDrawByChildMutation();
-
   const { refetch } = useGetDrawsQuery();
   const { refetch: refetchChild } = useGetDrawsByChildQuery();
   const [updateDraw, { isLoading: isUpdateLoading }] = useUpdateDrawMutation();
   const [localDraw, setLocalDraw] = useState(draw);
   const [isVisible, setIsVisible] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLocalDraw(draw);
@@ -69,14 +70,12 @@ const FileCard = ({ draw, showProfileImage = true, isChild }) => {
 
   return (
     <div className="p-2 transition-opacity duration-300">
-      <div className="h-36 bg-[#D9D9D9] w-full rounded-2xl p-2">
-        {showProfileImage && (
-          <img
-            src={localDraw.profileImg}
-            alt={localDraw.childName}
-            className="w-8 h-8 rounded-full"
-          />
-        )}
+      <div
+        className="h-36 bg-gray-200 w-full rounded-2xl p-2"
+        onClick={() => navigate(`/draw/${localDraw.id}`)}
+      >
+        {console.log(localDraw.image)}
+        <img src={localDraw.image} alt={localDraw.childName} className="" />
       </div>
       <p className="text-xl text-bgColor px-2">{localDraw.name}</p>
       <div className="flex justify-between items-center px-2">

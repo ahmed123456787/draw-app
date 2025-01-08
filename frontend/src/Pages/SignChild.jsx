@@ -2,23 +2,26 @@ import React, { useState } from "react";
 import asset from "./../assets/assets";
 import { useLoginChildMutation } from "../services/childApi";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 
 const SignChild = () => {
   const navigate = useNavigate();
   const [loginChild] = useLoginChildMutation();
   const [code, setCode] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
     try {
       console.log(document.cookie);
       const data = await loginChild({ token: code }).unwrap();
       localStorage.setItem("child", JSON.stringify(data));
-      setCode(""); // for clearning the input field
+      setCode(""); // for clearing the input field
+      setError(""); // Clear previous errors
       console.log("Login Response:", data);
       navigate("/home-child");
-    } catch (error) {
-      console.error("Login Error:", error);
+    } catch (err) {
+      console.error("Login Error:", err);
+      // Extract the error message and set it
+      setError(err.data?.message || "Invalid code. Please try again.");
     }
   };
 
@@ -49,6 +52,8 @@ const SignChild = () => {
               onChange={(e) => setCode(e.target.value)}
               className="bg-gray-200 w-full p-4 rounded-lg outline-none text-black mb-4"
             />
+            {/* Display error message */}
+            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
             <button
               type="button"
               onClick={handleLogin}

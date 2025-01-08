@@ -48,6 +48,13 @@ export const childApi = createApi({
         body: data,
       }),
     }),
+    updateDraw: builder.mutation({
+      query: (data) => ({
+        url: `child/draws/${data.id}/`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -56,4 +63,5 @@ export const {
   useLoginChildMutation,
   useDeleteDrawByChildMutation,
   useCreateDrawMutation,
+  useUpdateDrawMutation,
 } = childApi;
